@@ -1,0 +1,66 @@
+[21-Nov-2013 02:19:41 America/Chicago] PHP Fatal error:  Call to undefined function catList() in /home/skingraf/public_html/includes/nav.php on line 10
+[21-Nov-2013 02:30:03 America/Chicago] PHP Fatal error:  Call to undefined function subcatList() in /home/skingraf/public_html/includes/footer.php on line 7
+[21-Nov-2013 00:32:13 America/Los_Angeles] PHP Fatal error:  Call to undefined function getFirstSubID() in /home/skingraf/public_html/includes/header.php on line 45
+[21-Nov-2013 02:38:06 America/Chicago] PHP Fatal error:  Call to undefined function getShopCats() in /home/skingraf/public_html/includes/shopNav.php on line 3
+[21-Nov-2013 02:40:24 America/Chicago] PHP Fatal error:  Call to undefined function catList3() in /home/skingraf/public_html/includes/topMenu.php on line 9
+[21-Nov-2013 02:46:52 America/Chicago] PHP Warning:  mysql_query() [<a href='function.mysql-query'>function.mysql-query</a>]: Access denied for user 'skingraf'@'localhost' (using password: NO) in /home/skingraf/public_html/includes/leftNav.php on line 7
+[21-Nov-2013 02:46:52 America/Chicago] PHP Warning:  mysql_query() [<a href='function.mysql-query'>function.mysql-query</a>]: A link to the server could not be established in /home/skingraf/public_html/includes/leftNav.php on line 7
+[21-Nov-2013 02:46:52 America/Chicago] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, boolean given in /home/skingraf/public_html/includes/leftNav.php on line 9
+[21-Nov-2013 02:50:35 America/Chicago] PHP Warning:  require_once(classes/class.phpmailer.php) [<a href='function.require-once'>function.require-once</a>]: failed to open stream: No such file or directory in /home/skingraf/public_html/includes/wishlist.php on line 3
+[21-Nov-2013 02:50:35 America/Chicago] PHP Fatal error:  require_once() [<a href='function.require'>function.require</a>]: Failed opening required 'classes/class.phpmailer.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/skingraf/public_html/includes/wishlist.php on line 3
+[21-Nov-2013 03:00:27 America/Chicago] PHP Parse error:  syntax error, unexpected T_VAR in /home/skingraf/public_html/includes/footerMenu.php on line 32
+[24-Nov-2013 03:05:48 America/Chicago] PHP Fatal error:  Call to undefined function catList() in /home/skingraf/public_html/includes/nav.php on line 10
+[24-Nov-2013 03:50:58 America/Chicago] PHP Warning:  require_once(classes/class.phpmailer.php) [<a href='function.require-once'>function.require-once</a>]: failed to open stream: No such file or directory in /home/skingraf/public_html/includes/wishlist.php on line 3
+[24-Nov-2013 03:50:58 America/Chicago] PHP Fatal error:  require_once() [<a href='function.require'>function.require</a>]: Failed opening required 'classes/class.phpmailer.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/skingraf/public_html/includes/wishlist.php on line 3
+[24-Nov-2013 04:23:36 America/Chicago] PHP Fatal error:  Call to undefined function catList3() in /home/skingraf/public_html/includes/topMenu.php on line 9
+[24-Nov-2013 06:04:07 America/Los_Angeles] PHP Fatal error:  Call to undefined function getFirstSubID() in /home/skingraf/public_html/includes/header.php on line 45
+[24-Nov-2013 10:55:00 America/Chicago] PHP Fatal error:  Call to undefined function subcatList() in /home/skingraf/public_html/includes/footer.php on line 7
+[24-Nov-2013 12:01:06 America/Chicago] PHP Fatal error:  Call to undefined function getShopCats() in /home/skingraf/public_html/includes/shopNav.php on line 3
+[24-Nov-2013 12:37:00 America/Chicago] PHP Warning:  mysql_query() [<a href='function.mysql-query'>function.mysql-query</a>]: Access denied for user 'skingraf'@'localhost' (using password: NO) in /home/skingraf/public_html/includes/leftNav.php on line 7
+[24-Nov-2013 12:37:00 America/Chicago] PHP Warning:  mysql_query() [<a href='function.mysql-query'>function.mysql-query</a>]: A link to the server could not be established in /home/skingraf/public_html/includes/leftNav.php on line 7
+[24-Nov-2013 12:37:00 America/Chicago] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, boolean given in /home/skingraf/public_html/includes/leftNav.php on line 9
+[24-Nov-2013 12:49:09 America/Chicago] PHP Parse error:  syntax error, unexpected T_VAR in /home/skingraf/public_html/includes/footerMenu.php on line 32
+[26-Nov-2013 03:23:51 America/Chicago] PHP Warning:  require_once(classes/class.phpmailer.php) [<a href='function.require-once'>function.require-once</a>]: failed to open stream: No such file or directory in /home/skingraf/public_html/includes/wishlist.php on line 3
+[26-Nov-2013 03:23:51 America/Chicago] PHP Fatal error:  require_once() [<a href='function.require'>function.require</a>]: Failed opening required 'classes/class.phpmailer.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/skingraf/public_html/includes/wishlist.php on line 3
+[30-Nov-2013 05:57:56 America/Chicago] PHP Fatal error:  Call to undefined function subcatList() in /home/skingraf/public_html/includes/footer.php on line 7
+[01-Dec-2013 02:30:57 America/Chicago] PHP Warning:  mysql_query() [<a href='function.mysql-query'>function.mysql-query</a>]: Access denied for user 'skingraf'@'localhost' (using password: NO) in /home/skingraf/public_html/includes/leftNav.php on line 7
+[01-Dec-2013 02:30:57 America/Chicago] PHP Warning:  mysql_query() [<a href='function.mysql-query'>function.mysql-query</a>]: A link to the server could not be established in /home/skingraf/public_html/includes/leftNav.php on line 7
+[01-Dec-2013 02:30:57 America/Chicago] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, boolean given in /home/skingraf/public_html/includes/leftNav.php on line 9
+[02-Dec-2013 07:50:22 America/Chicago] PHP Fatal error:  Call to undefined function catList() in /home/skingraf/public_html/includes/nav.php on line 10
+[05-Dec-2013 22:53:15 America/Chicago] PHP Fatal error:  Call to undefined function subcatList() in /home/skingraf/public_html/includes/footer.php on line 7
+[05-Dec-2013 23:21:11 America/Chicago] PHP Parse error:  syntax error, unexpected T_VAR in /home/skingraf/public_html/includes/footerMenu.php on line 32
+[06-Dec-2013 02:58:16 America/Los_Angeles] PHP Fatal error:  Call to undefined function getFirstSubID() in /home/skingraf/public_html/includes/header.php on line 45
+[06-Dec-2013 06:42:49 America/Chicago] PHP Warning:  mysql_query() [<a href='function.mysql-query'>function.mysql-query</a>]: Access denied for user 'skingraf'@'localhost' (using password: NO) in /home/skingraf/public_html/includes/leftNav.php on line 7
+[06-Dec-2013 06:42:49 America/Chicago] PHP Warning:  mysql_query() [<a href='function.mysql-query'>function.mysql-query</a>]: A link to the server could not be established in /home/skingraf/public_html/includes/leftNav.php on line 7
+[06-Dec-2013 06:42:49 America/Chicago] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, boolean given in /home/skingraf/public_html/includes/leftNav.php on line 9
+[06-Dec-2013 16:39:35 America/Chicago] PHP Fatal error:  Call to undefined function catList() in /home/skingraf/public_html/includes/nav.php on line 10
+[06-Dec-2013 18:33:25 America/Chicago] PHP Fatal error:  Call to undefined function getShopCats() in /home/skingraf/public_html/includes/shopNav.php on line 3
+[23-Dec-2013 08:47:52 America/Chicago] PHP Parse error:  syntax error, unexpected T_VAR in /home/skingraf/public_html/includes/footerMenu.php on line 32
+[23-Dec-2013 10:02:52 America/Chicago] PHP Fatal error:  Call to undefined function catList3() in /home/skingraf/public_html/includes/topMenu.php on line 9
+[23-Dec-2013 10:17:52 America/Chicago] PHP Fatal error:  Call to undefined function getShopCats() in /home/skingraf/public_html/includes/shopNav.php on line 3
+[25-Dec-2013 00:12:44 America/Chicago] PHP Parse error:  syntax error, unexpected T_VAR in /home/skingraf/public_html/includes/footerMenu.php on line 32
+[25-Dec-2013 07:01:08 America/Chicago] PHP Fatal error:  Call to undefined function catList3() in /home/skingraf/public_html/includes/topMenu.php on line 9
+[25-Dec-2013 22:56:22 America/Los_Angeles] PHP Fatal error:  Call to undefined function getFirstSubID() in /home/skingraf/public_html/includes/header.php on line 45
+[29-Dec-2013 18:50:01 America/Los_Angeles] PHP Fatal error:  Call to undefined function getFirstSubID() in /home/skingraf/public_html/includes/header.php on line 45
+[02-Jan-2014 14:59:29 America/Chicago] PHP Fatal error:  Call to undefined function subcatList() in /home/skingraf/public_html/includes/footer.php on line 7
+[02-Jan-2014 14:59:29 America/Chicago] PHP Parse error:  syntax error, unexpected T_VAR in /home/skingraf/public_html/includes/footerMenu.php on line 32
+[02-Jan-2014 12:59:30 America/Los_Angeles] PHP Fatal error:  Call to undefined function getFirstSubID() in /home/skingraf/public_html/includes/header.php on line 45
+[02-Jan-2014 14:59:30 America/Chicago] PHP Warning:  mysql_query() [<a href='function.mysql-query'>function.mysql-query</a>]: Access denied for user 'skingraf'@'localhost' (using password: NO) in /home/skingraf/public_html/includes/leftNav.php on line 7
+[02-Jan-2014 14:59:30 America/Chicago] PHP Warning:  mysql_query() [<a href='function.mysql-query'>function.mysql-query</a>]: A link to the server could not be established in /home/skingraf/public_html/includes/leftNav.php on line 7
+[02-Jan-2014 14:59:30 America/Chicago] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, boolean given in /home/skingraf/public_html/includes/leftNav.php on line 9
+[02-Jan-2014 14:59:30 America/Chicago] PHP Fatal error:  Call to undefined function catList() in /home/skingraf/public_html/includes/nav.php on line 10
+[02-Jan-2014 14:59:31 America/Chicago] PHP Fatal error:  Call to undefined function getShopCats() in /home/skingraf/public_html/includes/shopNav.php on line 3
+[02-Jan-2014 14:59:31 America/Chicago] PHP Fatal error:  Call to undefined function catList3() in /home/skingraf/public_html/includes/topMenu.php on line 9
+[02-Jan-2014 14:59:32 America/Chicago] PHP Warning:  require_once(classes/class.phpmailer.php) [<a href='function.require-once'>function.require-once</a>]: failed to open stream: No such file or directory in /home/skingraf/public_html/includes/wishlist.php on line 3
+[02-Jan-2014 14:59:32 America/Chicago] PHP Fatal error:  require_once() [<a href='function.require'>function.require</a>]: Failed opening required 'classes/class.phpmailer.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/skingraf/public_html/includes/wishlist.php on line 3
+[12-Jan-2014 19:35:52 America/Chicago] PHP Fatal error:  Call to undefined function catList() in /home/skingraf/public_html/includes/nav.php on line 10
+[12-Jan-2014 20:08:29 America/Chicago] PHP Fatal error:  Call to undefined function getShopCats() in /home/skingraf/public_html/includes/shopNav.php on line 3
+[12-Jan-2014 22:15:33 America/Chicago] PHP Fatal error:  Call to undefined function catList3() in /home/skingraf/public_html/includes/topMenu.php on line 9
+[12-Jan-2014 23:56:33 America/Chicago] PHP Warning:  mysql_query() [<a href='function.mysql-query'>function.mysql-query</a>]: Access denied for user 'skingraf'@'localhost' (using password: NO) in /home/skingraf/public_html/includes/leftNav.php on line 7
+[12-Jan-2014 23:56:33 America/Chicago] PHP Warning:  mysql_query() [<a href='function.mysql-query'>function.mysql-query</a>]: A link to the server could not be established in /home/skingraf/public_html/includes/leftNav.php on line 7
+[12-Jan-2014 23:56:33 America/Chicago] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, boolean given in /home/skingraf/public_html/includes/leftNav.php on line 9
+[13-Jan-2014 04:21:40 America/Chicago] PHP Warning:  require_once(classes/class.phpmailer.php) [<a href='function.require-once'>function.require-once</a>]: failed to open stream: No such file or directory in /home/skingraf/public_html/includes/wishlist.php on line 3
+[13-Jan-2014 04:21:40 America/Chicago] PHP Fatal error:  require_once() [<a href='function.require'>function.require</a>]: Failed opening required 'classes/class.phpmailer.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/skingraf/public_html/includes/wishlist.php on line 3
+[13-Jan-2014 04:46:04 America/Chicago] PHP Fatal error:  Call to undefined function subcatList() in /home/skingraf/public_html/includes/footer.php on line 7
+[13-Jan-2014 03:19:38 America/Los_Angeles] PHP Fatal error:  Call to undefined function getFirstSubID() in /home/skingraf/public_html/includes/header.php on line 45
+[13-Jan-2014 14:58:17 America/Chicago] PHP Parse error:  syntax error, unexpected T_VAR in /home/skingraf/public_html/includes/footerMenu.php on line 32

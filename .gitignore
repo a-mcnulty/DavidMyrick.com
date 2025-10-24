@@ -1,0 +1,8 @@
+_SOURCE
+node_modules
+.cache
+dist
+.parcel-cache
+.npmrc
+images/pics
+videos

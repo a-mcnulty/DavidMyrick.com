@@ -1,0 +1,42 @@
+{
+  "name": "library",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "parcel:watch": "parcel watch ./src/*",
+    "parcel:build": "parcel build ./src/*",
+    "clean": "rimraf .cache .parcel-cache dist",
+    "build": "npm-run-all clean parcel:build",
+    "dev": "npm-run-all parcel:watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eastofwestern/library.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eastofwestern/library/issues"
+  },
+  "homepage": "https://github.com/eastofwestern/library#readme",
+  "dependencies": {
+    "ar-rows": "file:local_modules/ar-rows",
+    "autoprefixer": "^10.1.0",
+    "cross-env": "^7.0.3",
+    "flickity": "^2.3.0",
+    "flickity-fade": "^1.0.0",
+    "masonry-layout": "^4.2.2",
+    "node-forge": "^0.10.0",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
+    "social-icons": "file:local_modules/social-icons",
+    "vanilla-lazyload": "^17.3.0",
+    "zenscroll": "^4.0.2"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.4.0",
+    "cssnano": "^4.1.10",
+    "parcel": "^2.4.0"
+  }
+}

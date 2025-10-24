@@ -1,0 +1,29 @@
+{
+  "name": "library",
+  "version": "1.0.0",
+  "description": "",
+  "main": "site.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "parcel watch ./src/*.js",
+    "build": "parcel build ./src/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eastofwestern/library.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eastofwestern/library/issues"
+  },
+  "homepage": "https://github.com/eastofwestern/library#readme",
+  "dependencies": {
+    "ar-rows": "file:local_modules/ar-rows",
+    "flickity": "^2.2.1",
+    "flickity-fade": "^1.0.0",
+    "social-icons": "file:local_modules/social-icons",
+    "vanilla-lazyload": "^17.1.0"
+  }
+}
