@@ -8,5 +8,9 @@
 	<div class="inner ib v-middle">
 	
 	</div>
-	
+	<style>
+		.background {
+			color: red;
+		}
+		</style>
 </div>

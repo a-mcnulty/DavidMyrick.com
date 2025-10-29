@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Type 8</title>
+
+  <link rel="stylesheet" href="https://use.typekit.net/gip7dwn.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Marvin-Regular', sans-serif;
+      background-color: rgba(212, 208, 200, 0.5);
+      color: #000000;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .dvd-stack {
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+    }
+
+    .box-text {
+      font-family: 'aktiv-grotesk-condensed', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .dvd-box {
+      cursor: grab;
+      transition: opacity 0.3s ease;
+    }
+
+    .dvd-box:active {
+      cursor: grabbing;
+    }
+
+    .dvd-box.wrapping {
+      opacity: 0;
+    }
+
+    /* Remove CSS transitions - JavaScript handles all animation now */
+    .dvd-box rect,
+    .dvd-box polygon,
+    .dvd-box .trapezoid,
+    .dvd-box text {
+      transition: none;
+    }
+
+    svg {
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <svg class="dvd-stack" viewBox="0 0 800 900" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- Gradients for 3D effect -->
+        <linearGradient id="grayFront" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#e0ddd8;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#d0cdc8;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="grayTop" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#c8c5c0;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#b8b5b0;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="yellowFront" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#f4f0a8;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#e8e088;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="yellowTop" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#d4c878;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#c4b868;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+
+      <!-- Center alignment guideline (dashed) -->
+      <line x1="400" y1="0" x2="400" y2="900" stroke="#8a8782" stroke-width="2" stroke-dasharray="10,10" opacity="0.3"/>
+
+      <!-- Boxes will be dynamically rendered by JavaScript -->
+    </svg>
+  </div>
+
+  <script>
+    (function() {
+      // Content items with their labels and background images
+      const items = [
+        { id: 1, label: 'HOME', image: '/images/Screenshot2025-10-27at9.19.32PM.png' },
+        { id: 2, label: 'PHOTOGRAPHY', image: '/images/Screenshot2025-10-27at9.19.34PM.png' },
+        { id: 3, label: 'MUSIC VIDEO', image: '/images/Screenshot2025-10-27at9.19.37PM.png' },
+        { id: 4, label: 'COMMERCIAL', image: '/images/Screenshot2025-10-27at9.19.46PM.png' },
+        { id: 5, label: 'NARRATIVE', image: '/images/Screenshot2025-10-27at9.19.56PM.png' },
+        { id: 6, label: 'LET\'S TALK', image: '/images/Screenshot2025-10-27at9.19.59PM.png' },
+        { id: 7, label: 'FEATURED', image: '/images/Screenshot2025-10-27at9.20.02PM.png' }
+      ];
+
+      // Current rotation state - maps position index (0-6) to item
+      let currentState = [0, 1, 2, 6, 3, 4, 5]; // Start with FEATURED at position 3 (index 3, center)
+
+      // Position configurations (fixed visual properties for each slot)
+      const positionConfigs = [
+        // Position 1 (top - smallest)
+        {
+          frontRect: { x: 225, y: 26, width: 350, height: 38 },
+          trapezoid: { points: "225,64 575,64 550,89 250,89", onBottom: true },
+          textX: 245, textY: 45,
+          gradient: 'gray'
+        },
+        // Position 2
+        {
+          frontRect: { x: 200, y: 126, width: 400, height: 38 },
+          trapezoid: { points: "200,164 600,164 570,189 230,189", onBottom: true },
+          textX: 220, textY: 145,
+          gradient: 'gray'
+        },
+        // Position 3
+        {
+          frontRect: { x: 150, y: 226, width: 500, height: 38 },
+          trapezoid: { points: "150,264 650,264 600,289 200,289", onBottom: true },
+          textX: 170, textY: 245,
+          gradient: 'gray'
+        },
+        // Position 4 (CENTER - ACTIVE)
+        {
+          frontRect: { x: 125, y: 325, width: 550, height: 250 },
+          trapezoid: { points: "175,325 625,325 625,325 175,325", onBottom: true }, // Hidden trapezoid (flat line)
+          textX: 145, textY: 450,
+          gradient: 'yellow',
+          hideTrapezoid: true
+        },
+        // Position 5
+        {
+          frontRect: { x: 150, y: 636, width: 500, height: 38 },
+          trapezoid: { points: "200,611 600,611 650,636 150,636", onBottom: false },
+          textX: 170, textY: 655,
+          gradient: 'gray'
+        },
+        // Position 6
+        {
+          frontRect: { x: 200, y: 736, width: 400, height: 38 },
+          trapezoid: { points: "230,711 570,711 600,736 200,736", onBottom: false },
+          textX: 220, textY: 755,
+          gradient: 'gray'
+        },
+        // Position 7 (bottom - smallest)
+        {
+          frontRect: { x: 225, y: 836, width: 350, height: 38 },
+          trapezoid: { points: "250,811 550,811 575,836 225,836", onBottom: false },
+          textX: 245, textY: 855,
+          gradient: 'gray'
+        }
+      ];
+
+      // Initial render - creates all DOM elements
+      function initRender() {
+        const svg = document.querySelector('.dvd-stack');
+
+        currentState.forEach((itemIndex, positionIndex) => {
+          const item = items[itemIndex];
+          const config = positionConfigs[positionIndex];
+
+          const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+          group.classList.add('dvd-box');
+          group.setAttribute('data-item-id', item.id);
+          group.setAttribute('data-position', positionIndex);
+
+          // Create single trapezoid
+          const trapezoid = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+          trapezoid.classList.add('trapezoid');
+          trapezoid.setAttribute('stroke', '#8a8782');
+          trapezoid.setAttribute('stroke-width', '2');
+          group.appendChild(trapezoid);
+
+          // Create front face rectangle
+          const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          rect.classList.add('front-rect');
+          rect.setAttribute('stroke', '#8a8782');
+          rect.setAttribute('stroke-width', '2');
+          group.appendChild(rect);
+
+          // Create text
+          const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          text.classList.add('box-text');
+          text.setAttribute('fill', '#5a5852');
+          text.setAttribute('text-anchor', 'start');
+          text.setAttribute('dominant-baseline', 'middle');
+          text.textContent = item.label;
+          group.appendChild(text);
+
+          svg.appendChild(group);
+        });
+
+        // Apply initial styling
+        updateContinuousPositions();
+      }
+
+      // Interpolate between two point strings
+      function interpolatePoints(from, to, progress) {
+        const fromCoords = from.split(/[\s,]+/).map(Number);
+        const toCoords = to.split(/[\s,]+/).map(Number);
+
+        const interpolated = fromCoords.map((fromVal, i) => {
+          const toVal = toCoords[i] || fromVal;
+          return fromVal + (toVal - fromVal) * progress;
+        });
+
+        return interpolated.join(',');
+      }
+
+      // Cubic bezier easing function (matches CSS cubic-bezier(0.4, 0, 0.2, 1))
+      function cubicBezier(t, p1, p2, p3, p4) {
+        // Using cubic bezier approximation for (0.4, 0, 0.2, 1)
+        const cx = 3 * p1;
+        const bx = 3 * (p3 - p1) - cx;
+        const ax = 1 - cx - bx;
+
+        const cy = 3 * p2;
+        const by = 3 * (p4 - p2) - cy;
+        const ay = 1 - cy - by;
+
+        const sampleCurveX = (t) => ((ax * t + bx) * t + cx) * t;
+        const sampleCurveY = (t) => ((ay * t + by) * t + cy) * t;
+
+        // Binary search to find t for given x
+        let t0 = 0, t1 = 1, t2 = t;
+        for (let i = 0; i < 8; i++) {
+          const x2 = sampleCurveX(t2) - t;
+          if (Math.abs(x2) < 0.001) break;
+          const d2 = (3 * ax * t2 + 2 * bx) * t2 + cx;
+          if (Math.abs(d2) < 0.000001) break;
+          t2 -= x2 / d2;
+        }
+
+        return sampleCurveY(t2);
+      }
+
+      // Continuous scroll system
+      let scrollOffset = 0; // Continuous offset in "position units" (0-7)
+      let isDragging = false;
+      let startY = 0; // Track initial click position
+      let lastY = 0;
+      let velocity = 0;
+      let lastTimestamp = 0;
+      let dragDistance = 0; // Track total drag distance
+      const pixelsPerPosition = 100; // How many pixels to drag for one full position change
+      const clickThreshold = 10; // Max pixels moved to still count as a click
+
+      // Get interpolated position for an item at a given scroll offset
+      function getInterpolatedPosition(itemIndex, offset) {
+        // Find where this item currently is in the state
+        const currentPos = currentState.indexOf(itemIndex);
+        // Apply offset (can be fractional)
+        // Positive offset = scroll down = items move down (increase position)
+        let targetPos = (currentPos + offset) % 7;
+        // Handle negative wrap-around
+        if (targetPos < 0) targetPos += 7;
+        return targetPos;
+      }
+
+      // Interpolate between two position configs
+      function interpolateConfig(pos) {
+        let floorPos = Math.floor(pos) % 7;
+        let ceilPos = Math.ceil(pos) % 7;
+
+        // Handle negative indices
+        if (floorPos < 0) floorPos += 7;
+        if (ceilPos < 0) ceilPos += 7;
+
+        const fraction = pos - Math.floor(pos);
+
+        const config1 = positionConfigs[floorPos] || positionConfigs[0];
+        const config2 = positionConfigs[ceilPos] || positionConfigs[0];
+
+        return {
+          frontRect: {
+            x: config1.frontRect.x + (config2.frontRect.x - config1.frontRect.x) * fraction,
+            y: config1.frontRect.y + (config2.frontRect.y - config1.frontRect.y) * fraction,
+            width: config1.frontRect.width + (config2.frontRect.width - config1.frontRect.width) * fraction,
+            height: config1.frontRect.height + (config2.frontRect.height - config1.frontRect.height) * fraction
+          },
+          trapezoid: config1.trapezoid ? {
+            points: interpolatePoints(config1.trapezoid.points, config2.trapezoid?.points || config1.trapezoid.points, fraction)
+          } : null,
+          textX: config1.textX + (config2.textX - config1.textX) * fraction,
+          textY: config1.textY + (config2.textY - config1.textY) * fraction,
+          gradient: fraction < 0.5 ? config1.gradient : config2.gradient,
+          hideTrapezoid: fraction < 0.5 ? config1.hideTrapezoid : config2.hideTrapezoid
+        };
+      }
+
+      // Update background image based on active element
+      function updateBackgroundImage() {
+        // Find which item is at position 3 (index 3, the center/active position)
+        const activeItemIndex = currentState[3];
+        const activeItem = items[activeItemIndex];
+
+        console.log('Active element:', activeItem.label, 'Image:', activeItem.image);
+
+        // Test with a simple pattern first
+        // document.body.style.backgroundImage = 'repeating-linear-gradient(45deg, #606dbc, #606dbc 10px, #465298 10px, #465298 20px)';
+
+        // Set body background with tiled image
+        const imageUrl = activeItem.image;
+        document.body.style.backgroundImage = `url("${imageUrl}")`;
+        document.body.style.backgroundRepeat = 'repeat';
+        document.body.style.backgroundSize = 'auto';
+
+        console.log('Background image set to:', document.body.style.backgroundImage);
+
+        // Test if image loads
+        const testImg = new Image();
+        testImg.onload = () => console.log('✓ Image loaded successfully:', imageUrl);
+        testImg.onerror = () => console.error('✗ Image failed to load:', imageUrl);
+        testImg.src = imageUrl;
+      }
+
+      // Update all positions based on current scroll offset
+      function updateContinuousPositions() {
+        const svg = document.querySelector('.dvd-stack');
+
+        currentState.forEach((itemIndex, stateIndex) => {
+          const item = items[itemIndex];
+          const targetPos = getInterpolatedPosition(itemIndex, scrollOffset);
+          const config = interpolateConfig(targetPos);
+
+          const group = svg.querySelector(`[data-item-id="${item.id}"]`);
+          if (!group) return;
+
+          // Hide element when wrapping between position 7 and position 1
+          // Wrap zone is between 6.3 and 7 (wrapping through the boundary)
+          // When at rest at position 1 (targetPos ≈ 0), element is visible
+          const isWrapping = targetPos > 6.3;
+
+          if (isWrapping) {
+            group.style.opacity = '0';
+            group.style.zIndex = '-1'; // Move behind everything during wrap
+          } else {
+            group.style.opacity = '1';
+            group.style.zIndex = '0'; // Normal stacking when visible
+          }
+
+          const rect = group.querySelector('.front-rect');
+          const trapezoid = group.querySelector('.trapezoid');
+          const text = group.querySelector('text');
+
+          // Update rectangle
+          rect.setAttribute('x', config.frontRect.x);
+          rect.setAttribute('y', config.frontRect.y);
+          rect.setAttribute('width', config.frontRect.width);
+          rect.setAttribute('height', config.frontRect.height);
+          rect.setAttribute('fill', `url(#${config.gradient}Front)`);
+
+          // Update text
+          text.setAttribute('x', config.textX);
+          text.setAttribute('y', config.textY);
+
+          // Update trapezoid
+          if (config.trapezoid) {
+            trapezoid.setAttribute('points', config.trapezoid.points);
+            trapezoid.setAttribute('fill', `url(#${config.gradient}Top)`);
+          }
+
+          // Hide or show trapezoid
+          if (config.hideTrapezoid) {
+            trapezoid.style.opacity = '0';
+          } else {
+            trapezoid.style.opacity = '1';
+          }
+        });
+      }
+
+      // Drag interaction
+      function handleStart(e) {
+        isDragging = true;
+        const y = e.clientY || e.touches[0].clientY;
+        startY = y;
+        lastY = y;
+        dragDistance = 0;
+        velocity = 0;
+        lastTimestamp = performance.now();
+      }
+
+      function handleMove(e) {
+        if (!isDragging) return;
+        e.preventDefault();
+
+        const currentY = e.clientY || e.touches[0].clientY;
+        const deltaY = currentY - lastY;
+        const currentTime = performance.now();
+        const deltaTime = currentTime - lastTimestamp;
+
+        // Track total drag distance
+        dragDistance += Math.abs(deltaY);
+
+        // Update scroll offset based on drag
+        scrollOffset += deltaY / pixelsPerPosition;
+
+        // Calculate velocity for momentum
+        if (deltaTime > 0) {
+          velocity = deltaY / deltaTime; // pixels per ms
+        }
+
+        lastY = currentY;
+        lastTimestamp = currentTime;
+
+        updateContinuousPositions();
+      }
+
+      function handleEnd(e) {
+        isDragging = false;
+
+        // Check if this was a click (minimal drag distance)
+        if (dragDistance < clickThreshold) {
+          // Reset any accumulated offset from tiny movements
+          scrollOffset = 0;
+          updateContinuousPositions();
+
+          // Find which element was clicked
+          const clickY = e.clientY || e.changedTouches?.[0]?.clientY || lastY;
+          const svg = document.querySelector('.dvd-stack');
+          const svgRect = svg.getBoundingClientRect();
+          const relativeY = clickY - svgRect.top;
+
+          // Find the clicked item by checking which group was clicked
+          let clickedItemId = null;
+          const boxes = svg.querySelectorAll('.dvd-box');
+
+          for (const box of boxes) {
+            const rect = box.getBoundingClientRect();
+            const boxRelativeTop = rect.top - svgRect.top;
+            const boxRelativeBottom = rect.bottom - svgRect.top;
+
+            if (relativeY >= boxRelativeTop && relativeY <= boxRelativeBottom) {
+              clickedItemId = parseInt(box.getAttribute('data-item-id'));
+              break;
+            }
+          }
+
+          if (clickedItemId !== null) {
+            // Find which item index corresponds to this ID
+            const clickedItemIndex = items.findIndex(item => item.id === clickedItemId);
+
+            // Find current position of this item in the state
+            const currentPosition = currentState.indexOf(clickedItemIndex);
+
+            // Calculate how many positions to rotate to bring it to center (position 3)
+            const targetPosition = 3; // Center position
+            let rotationNeeded = targetPosition - currentPosition;
+
+            // Choose shortest path (handle wrap-around)
+            if (rotationNeeded > 3) {
+              rotationNeeded -= 7; // Go the other way
+            } else if (rotationNeeded < -3) {
+              rotationNeeded += 7; // Go the other way
+            }
+
+            console.log('Clicked item:', items[clickedItemIndex].label, 'at position', currentPosition, '-> rotating', rotationNeeded, 'to center');
+
+            // Animate to bring clicked item to center
+            animateToOffset(rotationNeeded);
+            return;
+          } else {
+            // Click on empty area - do nothing, keep current state
+            return;
+          }
+        }
+
+        // Normal drag/flick behavior
+        // Apply momentum and snap to nearest position
+        const momentumOffset = velocity * 200; // project 200ms into future
+        const targetOffset = scrollOffset + (momentumOffset / pixelsPerPosition);
+
+        // Find nearest integer position
+        const snappedOffset = Math.round(targetOffset);
+
+        // Animate to snapped position
+        animateToOffset(snappedOffset);
+      }
+
+      // Animate scroll offset to target with easing
+      function animateToOffset(targetOffset) {
+        const startOffset = scrollOffset;
+        const distance = targetOffset - startOffset;
+        const duration = Math.min(500, Math.abs(distance) * 200); // Dynamic duration based on distance
+        const startTime = performance.now();
+
+        function animate(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = cubicBezier(progress, 0.4, 0, 0.2, 1);
+
+          scrollOffset = startOffset + distance * eased;
+          updateContinuousPositions();
+
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            // Update state array to match final positions
+            syncStateToOffset();
+          }
+        }
+
+        requestAnimationFrame(animate);
+      }
+
+      // Sync state array to match current scroll offset
+      function syncStateToOffset() {
+        const roundedOffset = Math.round(scrollOffset);
+        const normalizedOffset = ((roundedOffset % 7) + 7) % 7;
+
+        // Rotate state array to match offset
+        // Positive offset = items moved down = shift array backward
+        for (let i = 0; i < normalizedOffset; i++) {
+          const last = currentState.pop();
+          currentState.unshift(last);
+        }
+
+        scrollOffset = 0; // Reset offset since we've synced the state
+
+        console.log('State synced, new currentState:', currentState.map((idx, pos) => `pos${pos}=${items[idx].label}`));
+
+        // Update background when a new element becomes active
+        updateBackgroundImage();
+      }
+
+      // Event listeners
+      const svg = document.querySelector('.dvd-stack');
+      svg.addEventListener('mousedown', handleStart);
+      document.addEventListener('mousemove', handleMove);
+      document.addEventListener('mouseup', (e) => handleEnd(e));
+
+      svg.addEventListener('touchstart', handleStart, { passive: false });
+      document.addEventListener('touchmove', handleMove, { passive: false });
+      document.addEventListener('touchend', (e) => handleEnd(e));
+
+      // Initial render
+      initRender();
+
+      // Set initial background image
+      updateBackgroundImage();
+    })();
+  </script>
+
+</body>
+</html>
