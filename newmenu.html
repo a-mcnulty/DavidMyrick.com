@@ -45,8 +45,8 @@
 
     .box-text {
       font-family: 'aktiv-grotesk-condensed', sans-serif;
-      font-size: 14px;
-      font-weight: 600;
+      font-size: 20px;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.1em;
     }
@@ -84,27 +84,27 @@
   <div class="container">
     <svg class="dvd-stack" viewBox="0 0 800 900" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <!-- Gradients for 3D effect -->
+        <!-- Gradients for 3D effect - Monochromatic with ~75% opacity -->
         <linearGradient id="grayFront" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" style="stop-color:#e0ddd8;stop-opacity:1" />
-          <stop offset="100%" style="stop-color:#d0cdc8;stop-opacity:1" />
+          <stop offset="0%" style="stop-color:rgba(220, 220, 220, 0.75);stop-opacity:1" />
+          <stop offset="100%" style="stop-color:rgba(200, 200, 200, 0.75);stop-opacity:1" />
         </linearGradient>
         <linearGradient id="grayTop" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" style="stop-color:#c8c5c0;stop-opacity:1" />
-          <stop offset="100%" style="stop-color:#b8b5b0;stop-opacity:1" />
+          <stop offset="0%" style="stop-color:rgba(160, 160, 160, 0.75);stop-opacity:1" />
+          <stop offset="100%" style="stop-color:rgba(140, 140, 140, 0.75);stop-opacity:1" />
         </linearGradient>
         <linearGradient id="yellowFront" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" style="stop-color:#f4f0a8;stop-opacity:1" />
-          <stop offset="100%" style="stop-color:#e8e088;stop-opacity:1" />
+          <stop offset="0%" style="stop-color:rgba(255, 255, 255, 0.75);stop-opacity:1" />
+          <stop offset="100%" style="stop-color:rgba(240, 240, 240, 0.75);stop-opacity:1" />
         </linearGradient>
         <linearGradient id="yellowTop" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" style="stop-color:#d4c878;stop-opacity:1" />
-          <stop offset="100%" style="stop-color:#c4b868;stop-opacity:1" />
+          <stop offset="0%" style="stop-color:rgba(200, 200, 200, 0.75);stop-opacity:1" />
+          <stop offset="100%" style="stop-color:rgba(180, 180, 180, 0.75);stop-opacity:1" />
         </linearGradient>
       </defs>
 
       <!-- Center alignment guideline (dashed) -->
-      <line x1="400" y1="0" x2="400" y2="900" stroke="#8a8782" stroke-width="2" stroke-dasharray="10,10" opacity="0.3"/>
+      <line x1="400" y1="0" x2="400" y2="900" stroke="rgba(138, 135, 130, 0.75)" stroke-width="2" stroke-dasharray="10,10" opacity="0.3"/>
 
       <!-- Boxes will be dynamically rendered by JavaScript -->
     </svg>
@@ -196,14 +196,14 @@
           // Create single trapezoid
           const trapezoid = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
           trapezoid.classList.add('trapezoid');
-          trapezoid.setAttribute('stroke', '#8a8782');
+          trapezoid.setAttribute('stroke', 'rgba(138, 135, 130, 0.75)');
           trapezoid.setAttribute('stroke-width', '2');
           group.appendChild(trapezoid);
 
           // Create front face rectangle
           const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
           rect.classList.add('front-rect');
-          rect.setAttribute('stroke', '#8a8782');
+          rect.setAttribute('stroke', 'rgba(138, 135, 130, 0.75)');
           rect.setAttribute('stroke-width', '2');
           group.appendChild(rect);
 
@@ -273,6 +273,10 @@
       let dragDistance = 0; // Track total drag distance
       const pixelsPerPosition = 100; // How many pixels to drag for one full position change
       const clickThreshold = 10; // Max pixels moved to still count as a click
+
+      // Wheel scroll state
+      let wheelTimeout = null;
+      let isWheelScrolling = false;
 
       // Get interpolated position for an item at a given scroll offset
       function getInterpolatedPosition(itemIndex, offset) {
@@ -506,6 +510,37 @@
         animateToOffset(snappedOffset);
       }
 
+      // Handle mouse wheel scroll
+      function handleWheel(e) {
+        e.preventDefault();
+
+        // Don't allow wheel scrolling during drag
+        if (isDragging) return;
+
+        isWheelScrolling = true;
+
+        // Convert wheel deltaY to scroll offset
+        // Positive deltaY = scroll down = items move down
+        const delta = e.deltaY;
+        scrollOffset += delta / pixelsPerPosition;
+
+        updateContinuousPositions();
+
+        // Clear existing timeout
+        if (wheelTimeout) {
+          clearTimeout(wheelTimeout);
+        }
+
+        // Set timeout to snap after scrolling stops
+        wheelTimeout = setTimeout(() => {
+          isWheelScrolling = false;
+
+          // Snap to nearest position
+          const snappedOffset = Math.round(scrollOffset);
+          animateToOffset(snappedOffset);
+        }, 150); // Wait 150ms after last wheel event
+      }
+
       // Animate scroll offset to target with easing
       function animateToOffset(targetOffset) {
         const startOffset = scrollOffset;
@@ -561,6 +596,9 @@
       svg.addEventListener('touchstart', handleStart, { passive: false });
       document.addEventListener('touchmove', handleMove, { passive: false });
       document.addEventListener('touchend', (e) => handleEnd(e));
+
+      // Add wheel scroll support
+      svg.addEventListener('wheel', handleWheel, { passive: false });
 
       // Initial render
       initRender();
