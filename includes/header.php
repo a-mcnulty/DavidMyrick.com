@@ -167,15 +167,34 @@ nav.takeover > ul {
 	display: none !important;
 }
 
+/* Fix: Make nav.takeover background transparent and non-blocking when menu is closed on homepage */
+body.homepage:not(.menuOn) nav.takeover {
+	background-color: transparent;
+	pointer-events: none;
+	display: none;
+}
+
+/* Restore nav when menu is open */
+body.homepage.menuOn nav.takeover {
+	background-color: #ffffffe6;
+	pointer-events: all;
+	display: block;
+}
+
 /* SVG Menu Container */
 nav.takeover .svg-menu-container {
-	display: flex;
+	display: none; /* Hidden by default when menu is closed */
 	justify-content: center;
 	align-items: center;
 	width: 100%;
 	height: 100%;
 	position: relative;
 	z-index: 2;
+}
+
+/* Show SVG menu only when menu is open */
+.menuOn nav.takeover .svg-menu-container {
+	display: flex;
 }
 
 nav.takeover .dvd-stack {
@@ -343,9 +362,13 @@ nav.takeover svg {
 	}
 
 	function updateBackgroundImage() {
+		// Only update menu backgrounds, not homepage videos
+		const backgroundContainer = document.querySelector('nav.takeover .background');
+		if (!backgroundContainer) return;
+
 		const activeItemIndex = currentState[2];
 		const activeItem = items[activeItemIndex];
-		const cells = document.querySelectorAll('.background .cell');
+		const cells = backgroundContainer.querySelectorAll('.cell');
 
 		cells.forEach(cell => {
 			const cellId = parseInt(cell.getAttribute('data-id'));
@@ -606,7 +629,8 @@ nav.takeover svg {
 		svg.addEventListener('wheel', handleWheel, { passive: false });
 
 		initRender();
-		updateBackgroundImage();
+		// Don't call updateBackgroundImage() on page load - only when menu is actually used
+		// updateBackgroundImage();
 	}
 
 	if (document.readyState === 'loading') {
