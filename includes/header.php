@@ -101,21 +101,26 @@ $logoMark = getFirstImage(719);
 
 				$firstItem = getFirstImage($theCatId, $theSorter);
 				$hasVideo = false;
-				$firstItemVideo = getImageVideo($firstItem['id']);
-				if ($firstItemVideo['hoverFile'] != "") {
-					$hasVideo = true;
-					$videoStr = '<video muted playsinline loop><source src="/videos/' . $firstItemVideo['hoverFile'] . '" /></video>';
-				}
-				if ($firstItemVideo['url_loop_desktop'] != "") {
-					$hasVideo = true;
-					$videoStr = '<video muted playsinline loop class="sizeload" data-hd="' . $firstItemVideo['url_loop_desktop'] . '" data-sd="' . $firstItemVideo['url_loop_mobile'] . '"><source src="" /></video>';
+				$videoStr = '';
+
+				// Only proceed if we have a valid image
+				if ($firstItem && isset($firstItem['id'])) {
+					$firstItemVideo = getImageVideo($firstItem['id']);
+					if ($firstItemVideo && isset($firstItemVideo['hoverFile']) && $firstItemVideo['hoverFile'] != "") {
+						$hasVideo = true;
+						$videoStr = '<video muted playsinline loop><source src="/videos/' . $firstItemVideo['hoverFile'] . '" /></video>';
+					}
+					if ($firstItemVideo && isset($firstItemVideo['url_loop_desktop']) && $firstItemVideo['url_loop_desktop'] != "") {
+						$hasVideo = true;
+						$videoStr = '<video muted playsinline loop class="sizeload" data-hd="' . $firstItemVideo['url_loop_desktop'] . '" data-sd="' . $firstItemVideo['url_loop_mobile'] . '"><source src="" /></video>';
+					}
 				}
 
 				?>
 				<div class="cell" data-id="<?= $cat['id'] ?>">
 					<?php if ($hasVideo) { ?>
 						<?= $videoStr ?>
-					<?php } else { ?>
+					<?php } elseif ($firstItem && isset($firstItem['img'])) { ?>
 						<img src="<?= $loaderImg ?>" data-img="<?= $firstItem['img'] ?>" class="photo loadmeview" alt="<?= $cat['name'] ?>" />
 					<?php } ?>
 				</div>
@@ -181,10 +186,10 @@ nav.takeover .dvd-stack {
 
 nav.takeover .box-text {
 	font-family: 'aktiv-grotesk-condensed', sans-serif;
-	font-size: 20px;
-	font-weight: 700;
+	font-size: 1.5rem;
+	font-weight: 400;
 	text-transform: uppercase;
-	letter-spacing: 0.1em;
+	letter-spacing: 0;
 }
 
 nav.takeover .dvd-box {
@@ -222,36 +227,66 @@ nav.takeover svg {
 	}
 
 	nav.takeover .box-text {
-		font-size: 16px;
+		font-size: 1.2rem;
+	}
+}
+
+@media (max-width: 1023px) {
+	nav.takeover .box-text {
+		font-size: 1.3rem;
 	}
 }
 </style>
 
 <script>
 (function() {
-	// Menu items data - mapped to PHP categories
+	// Menu items data - dynamically generated from live PHP categories
 	const items = [
-		{ id: 0, label: 'HOME', url: '/', catId: 717 },
-		{ id: 1, label: 'PHOTOGRAPHY', url: '/photography-featured', catId: 724 },
-		{ id: 2, label: 'MUSIC VIDEO', url: '/music-video', catId: 725 },
-		{ id: 3, label: 'COMMERCIAL', url: '/commercial-featured', catId: 726 },
-		{ id: 4, label: 'NARRATIVE', url: '/narrative', catId: 727 },
-		{ id: 5, label: 'LET\'S TALK', url: '/lets-talk', catId: 728 },
-		{ id: 6, label: 'FEATURED', url: '/', catId: 717 }
+		<?php
+		mysqli_data_seek($cats, 0);
+		$itemId = 0;
+		$menuItems = [];
+		for ($count = 1; $cat = mysqli_fetch_array($cats); ++$count) {
+			// Determine the URL for this category
+			if ($cat['pageType'] === "link") {
+				$theLink = $cat['link'];
+			} else {
+				$theLink = "/" . $cat['slug'];
+			}
+
+			// Check for subcategories
+			$catSubs = subcatList($cat['id']);
+			if (mysqli_num_rows($catSubs) > 0) {
+				$firstSubId = getFirstSubID($cat['id']);
+				$firstSub = catDetails($firstSubId);
+				if ($firstSub['pageType'] === "link") {
+					$theLink = $firstSub['link'];
+				} else {
+					$theLink = "/" . $firstSub['slug'];
+				}
+			}
+
+			// Escape quotes in label and URL for JavaScript
+			$label = addslashes($cat['name']);
+			$url = addslashes($theLink);
+
+			$menuItems[] = "{ id: $itemId, label: '$label', url: '$url', catId: {$cat['id']} }";
+			$itemId++;
+		}
+		echo implode(",\n\t\t", $menuItems);
+		?>
 	];
 
-	// Current rotation state
-	let currentState = [0, 1, 2, 6, 3, 4, 5]; // FEATURED at center
+	// Current rotation state - array of item indices with center position at index 2
+	let currentState = [0, 1, 2, 3, 4]; // Middle item (index 2) at center
 
-	// Position configurations
+	// Position configurations - 5 positions for 5 menu items
 	const positionConfigs = [
-		{ frontRect: { x: 225, y: 26, width: 350, height: 38 }, trapezoid: { points: "225,64 575,64 550,89 250,89", onBottom: true }, textX: 245, textY: 45, gradient: 'gray' },
 		{ frontRect: { x: 200, y: 126, width: 400, height: 38 }, trapezoid: { points: "200,164 600,164 570,189 230,189", onBottom: true }, textX: 220, textY: 145, gradient: 'gray' },
 		{ frontRect: { x: 150, y: 226, width: 500, height: 38 }, trapezoid: { points: "150,264 650,264 600,289 200,289", onBottom: true }, textX: 170, textY: 245, gradient: 'gray' },
 		{ frontRect: { x: 125, y: 325, width: 550, height: 250 }, trapezoid: { points: "175,325 625,325 625,325 175,325", onBottom: true }, textX: 145, textY: 450, gradient: 'yellow', hideTrapezoid: true },
 		{ frontRect: { x: 150, y: 636, width: 500, height: 38 }, trapezoid: { points: "200,611 600,611 650,636 150,636", onBottom: false }, textX: 170, textY: 655, gradient: 'gray' },
-		{ frontRect: { x: 200, y: 736, width: 400, height: 38 }, trapezoid: { points: "230,711 570,711 600,736 200,736", onBottom: false }, textX: 220, textY: 755, gradient: 'gray' },
-		{ frontRect: { x: 225, y: 836, width: 350, height: 38 }, trapezoid: { points: "250,811 550,811 575,836 225,836", onBottom: false }, textX: 245, textY: 855, gradient: 'gray' }
+		{ frontRect: { x: 200, y: 736, width: 400, height: 38 }, trapezoid: { points: "230,711 570,711 600,736 200,736", onBottom: false }, textX: 220, textY: 755, gradient: 'gray' }
 	];
 
 	let scrollOffset = 0;
@@ -308,7 +343,7 @@ nav.takeover svg {
 	}
 
 	function updateBackgroundImage() {
-		const activeItemIndex = currentState[3];
+		const activeItemIndex = currentState[2];
 		const activeItem = items[activeItemIndex];
 		const cells = document.querySelectorAll('.background .cell');
 
@@ -354,16 +389,16 @@ nav.takeover svg {
 
 	function getInterpolatedPosition(itemIndex, offset) {
 		const currentPos = currentState.indexOf(itemIndex);
-		let targetPos = (currentPos + offset) % 7;
-		if (targetPos < 0) targetPos += 7;
+		let targetPos = (currentPos + offset) % 5;
+		if (targetPos < 0) targetPos += 5;
 		return targetPos;
 	}
 
 	function interpolateConfig(pos) {
-		let floorPos = Math.floor(pos) % 7;
-		let ceilPos = Math.ceil(pos) % 7;
-		if (floorPos < 0) floorPos += 7;
-		if (ceilPos < 0) ceilPos += 7;
+		let floorPos = Math.floor(pos) % 5;
+		let ceilPos = Math.ceil(pos) % 5;
+		if (floorPos < 0) floorPos += 5;
+		if (ceilPos < 0) ceilPos += 5;
 		const fraction = pos - Math.floor(pos);
 		const config1 = positionConfigs[floorPos] || positionConfigs[0];
 		const config2 = positionConfigs[ceilPos] || positionConfigs[0];
@@ -395,7 +430,7 @@ nav.takeover svg {
 			const group = svg.querySelector(`[data-item-id="${item.id}"]`);
 			if (!group) return;
 
-			const isWrapping = targetPos > 6.3;
+			const isWrapping = targetPos > 4.3;
 			group.style.opacity = isWrapping ? '0' : '1';
 			group.style.zIndex = isWrapping ? '-1' : '0';
 
@@ -478,18 +513,18 @@ nav.takeover svg {
 				const currentPosition = currentState.indexOf(clickedItemIndex);
 
 				// If clicking active item, navigate
-				if (currentPosition === 3) {
+				if (currentPosition === 2) {
 					window.location.href = items[clickedItemIndex].url;
 					return;
 				}
 
 				// Otherwise, bring to center
-				const targetPosition = 3;
+				const targetPosition = 2;
 				let rotationNeeded = targetPosition - currentPosition;
-				if (rotationNeeded > 3) {
-					rotationNeeded -= 7;
-				} else if (rotationNeeded < -3) {
-					rotationNeeded += 7;
+				if (rotationNeeded > 2) {
+					rotationNeeded -= 5;
+				} else if (rotationNeeded < -2) {
+					rotationNeeded += 5;
 				}
 				animateToOffset(rotationNeeded);
 				return;
@@ -546,7 +581,7 @@ nav.takeover svg {
 
 	function syncStateToOffset() {
 		const roundedOffset = Math.round(scrollOffset);
-		const normalizedOffset = ((roundedOffset % 7) + 7) % 7;
+		const normalizedOffset = ((roundedOffset % 5) + 5) % 5;
 		for (let i = 0; i < normalizedOffset; i++) {
 			const last = currentState.pop();
 			currentState.unshift(last);
