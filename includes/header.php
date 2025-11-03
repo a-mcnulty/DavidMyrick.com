@@ -204,20 +204,16 @@ nav.takeover .dvd-stack {
 }
 
 nav.takeover .box-text {
-	font-family: 'aktiv-grotesk-condensed', sans-serif;
-	font-size: 1.5rem;
-	font-weight: 400;
+	font-family: 'Marvin-Regular', sans-serif;
+	font-size: 1.7rem;
+	font-weight: 700;
 	text-transform: uppercase;
 	letter-spacing: 0;
 }
 
 nav.takeover .dvd-box {
-	cursor: grab;
+	cursor: pointer;
 	transition: opacity 0.3s ease;
-}
-
-nav.takeover .dvd-box:active {
-	cursor: grabbing;
 }
 
 nav.takeover .dvd-box.wrapping {
