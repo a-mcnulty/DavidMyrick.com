@@ -205,7 +205,7 @@ nav.takeover .dvd-stack {
 
 nav.takeover .box-text {
 	font-family: 'Marvin-Regular', sans-serif;
-	font-size: 1.7rem;
+	/* font-size is now set dynamically via JavaScript based on box height */
 	font-weight: 700;
 	text-transform: uppercase;
 	letter-spacing: 0;
@@ -239,16 +239,6 @@ nav.takeover svg {
 	nav.takeover .dvd-stack {
 		max-width: 100%;
 		padding: 0 20px;
-	}
-
-	nav.takeover .box-text {
-		font-size: 3.5rem;
-	}
-}
-
-@media (max-width: 1023px) {
-	nav.takeover .box-text {
-		font-size: 1.3rem;
 	}
 }
 </style>
@@ -308,7 +298,7 @@ nav.takeover svg {
 	const mobilePositionConfigs = [
 		{ frontRect: { x: 200, y: 40, width: 400, height: 60 }, trapezoid: { points: "200,100 600,100 570,140 230,140", onBottom: true }, textX: 220, textY: 70, gradient: 'gray' },
 		{ frontRect: { x: 150, y: 165, width: 500, height: 60 }, trapezoid: { points: "150,225 650,225 600,265 200,265", onBottom: true }, textX: 170, textY: 195, gradient: 'gray' },
-		{ frontRect: { x: 125, y: 300, width: 550, height: 280 }, trapezoid: { points: "175,300 625,300 625,300 175,300", onBottom: true }, textX: 145, textY: 490, gradient: 'yellow', hideTrapezoid: true },
+		{ frontRect: { x: 125, y: 300, width: 550, height: 280 }, trapezoid: { points: "175,300 625,300 625,300 175,300", onBottom: true }, textX: 145, textY: 450, gradient: 'yellow', hideTrapezoid: true },
 		{ frontRect: { x: 150, y: 665, width: 500, height: 60 }, trapezoid: { points: "200,625 600,625 650,665 150,665", onBottom: false }, textX: 170, textY: 695, gradient: 'gray' },
 		{ frontRect: { x: 200, y: 790, width: 400, height: 60 }, trapezoid: { points: "230,750 570,750 600,790 200,790", onBottom: false }, textX: 220, textY: 820, gradient: 'gray' }
 	];
@@ -474,6 +464,11 @@ nav.takeover svg {
 
 			text.setAttribute('x', config.textX);
 			text.setAttribute('y', config.textY);
+
+			// Dynamic font sizing based on box height
+			const baseFontSize = config.frontRect.height * 0.5;
+			const cappedFontSize = Math.min(baseFontSize, 40); // Cap at 40px for very large boxes
+			text.setAttribute('font-size', cappedFontSize);
 
 			if (config.trapezoid) {
 				trapezoid.setAttribute('points', config.trapezoid.points);
