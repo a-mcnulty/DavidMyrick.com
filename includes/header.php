@@ -131,22 +131,22 @@ $logoMark = getFirstImage(719);
 		<div class="svg-menu-container">
 			<svg class="dvd-stack" viewBox="0 0 800 900" xmlns="http://www.w3.org/2000/svg">
 				<defs>
-					<!-- Gradients for 3D effect - Monochromatic with ~75% opacity -->
+					<!-- Gradients for 3D effect - Monochromatic with ~60% opacity -->
 					<linearGradient id="grayFront" x1="0%" y1="0%" x2="0%" y2="100%">
-						<stop offset="0%" style="stop-color:rgba(220, 220, 220, 0.75);stop-opacity:1" />
-						<stop offset="100%" style="stop-color:rgba(200, 200, 200, 0.75);stop-opacity:1" />
+						<stop offset="0%" style="stop-color:rgba(220, 220, 220, 0.60);stop-opacity:1" />
+						<stop offset="100%" style="stop-color:rgba(200, 200, 200, 0.60);stop-opacity:1" />
 					</linearGradient>
 					<linearGradient id="grayTop" x1="0%" y1="0%" x2="0%" y2="100%">
-						<stop offset="0%" style="stop-color:rgba(160, 160, 160, 0.75);stop-opacity:1" />
-						<stop offset="100%" style="stop-color:rgba(140, 140, 140, 0.75);stop-opacity:1" />
+						<stop offset="0%" style="stop-color:rgba(160, 160, 160, 0.60);stop-opacity:1" />
+						<stop offset="100%" style="stop-color:rgba(140, 140, 140, 0.60);stop-opacity:1" />
 					</linearGradient>
 					<linearGradient id="yellowFront" x1="0%" y1="0%" x2="0%" y2="100%">
-						<stop offset="0%" style="stop-color:rgba(255, 255, 255, 0.75);stop-opacity:1" />
-						<stop offset="100%" style="stop-color:rgba(240, 240, 240, 0.75);stop-opacity:1" />
+						<stop offset="0%" style="stop-color:rgba(255, 255, 255, 0.60);stop-opacity:1" />
+						<stop offset="100%" style="stop-color:rgba(240, 240, 240, 0.60);stop-opacity:1" />
 					</linearGradient>
 					<linearGradient id="yellowTop" x1="0%" y1="0%" x2="0%" y2="100%">
-						<stop offset="0%" style="stop-color:rgba(200, 200, 200, 0.75);stop-opacity:1" />
-						<stop offset="100%" style="stop-color:rgba(180, 180, 180, 0.75);stop-opacity:1" />
+						<stop offset="0%" style="stop-color:rgba(200, 200, 200, 0.60);stop-opacity:1" />
+						<stop offset="100%" style="stop-color:rgba(180, 180, 180, 0.60);stop-opacity:1" />
 					</linearGradient>
 				</defs>
 
@@ -242,7 +242,7 @@ nav.takeover svg {
 	}
 
 	nav.takeover .box-text {
-		font-size: 1.2rem;
+		font-size: 3.5rem;
 	}
 }
 
@@ -295,14 +295,27 @@ nav.takeover svg {
 	// Current rotation state - array of item indices with center position at index 2
 	let currentState = [0, 1, 2, 3, 4]; // Middle item (index 2) at center
 
-	// Position configurations - 5 positions for 5 menu items
-	const positionConfigs = [
+	// Desktop position configurations - 5 positions for 5 menu items
+	const desktopPositionConfigs = [
 		{ frontRect: { x: 200, y: 126, width: 400, height: 38 }, trapezoid: { points: "200,164 600,164 570,189 230,189", onBottom: true }, textX: 220, textY: 145, gradient: 'gray' },
 		{ frontRect: { x: 150, y: 226, width: 500, height: 38 }, trapezoid: { points: "150,264 650,264 600,289 200,289", onBottom: true }, textX: 170, textY: 245, gradient: 'gray' },
 		{ frontRect: { x: 125, y: 325, width: 550, height: 250 }, trapezoid: { points: "175,325 625,325 625,325 175,325", onBottom: true }, textX: 145, textY: 450, gradient: 'yellow', hideTrapezoid: true },
 		{ frontRect: { x: 150, y: 636, width: 500, height: 38 }, trapezoid: { points: "200,611 600,611 650,636 150,636", onBottom: false }, textX: 170, textY: 655, gradient: 'gray' },
 		{ frontRect: { x: 200, y: 736, width: 400, height: 38 }, trapezoid: { points: "230,711 570,711 600,736 200,736", onBottom: false }, textX: 220, textY: 755, gradient: 'gray' }
 	];
+
+	// Mobile position configurations - larger boxes with proper spacing
+	const mobilePositionConfigs = [
+		{ frontRect: { x: 200, y: 40, width: 400, height: 60 }, trapezoid: { points: "200,100 600,100 570,140 230,140", onBottom: true }, textX: 220, textY: 70, gradient: 'gray' },
+		{ frontRect: { x: 150, y: 165, width: 500, height: 60 }, trapezoid: { points: "150,225 650,225 600,265 200,265", onBottom: true }, textX: 170, textY: 195, gradient: 'gray' },
+		{ frontRect: { x: 125, y: 300, width: 550, height: 280 }, trapezoid: { points: "175,300 625,300 625,300 175,300", onBottom: true }, textX: 145, textY: 490, gradient: 'yellow', hideTrapezoid: true },
+		{ frontRect: { x: 150, y: 665, width: 500, height: 60 }, trapezoid: { points: "200,625 600,625 650,665 150,665", onBottom: false }, textX: 170, textY: 695, gradient: 'gray' },
+		{ frontRect: { x: 200, y: 790, width: 400, height: 60 }, trapezoid: { points: "230,750 570,750 600,790 200,790", onBottom: false }, textX: 220, textY: 820, gradient: 'gray' }
+	];
+
+	// Check screen size and select appropriate config
+	let isMobile = window.innerWidth <= 767;
+	let positionConfigs = isMobile ? mobilePositionConfigs : desktopPositionConfigs;
 
 	let scrollOffset = 0;
 	let isDragging = false;
@@ -333,14 +346,10 @@ nav.takeover svg {
 
 			const trapezoid = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
 			trapezoid.classList.add('trapezoid');
-			trapezoid.setAttribute('stroke', 'rgba(138, 135, 130, 0.75)');
-			trapezoid.setAttribute('stroke-width', '2');
 			group.appendChild(trapezoid);
 
 			const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
 			rect.classList.add('front-rect');
-			rect.setAttribute('stroke', 'rgba(138, 135, 130, 0.75)');
-			rect.setAttribute('stroke-width', '2');
 			group.appendChild(rect);
 
 			const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
@@ -609,6 +618,16 @@ nav.takeover svg {
 		updateBackgroundImage();
 	}
 
+	function handleResize() {
+		const newIsMobile = window.innerWidth <= 767;
+		// Only update if we crossed the breakpoint
+		if (newIsMobile !== isMobile) {
+			isMobile = newIsMobile;
+			positionConfigs = isMobile ? mobilePositionConfigs : desktopPositionConfigs;
+			updateContinuousPositions();
+		}
+	}
+
 	function init() {
 		const svg = document.querySelector('.dvd-stack');
 		if (!svg) {
@@ -623,10 +642,57 @@ nav.takeover svg {
 		document.addEventListener('touchmove', handleMove, { passive: false });
 		document.addEventListener('touchend', handleEnd);
 		svg.addEventListener('wheel', handleWheel, { passive: false });
+		window.addEventListener('resize', handleResize);
 
 		initRender();
 		// Don't call updateBackgroundImage() on page load - only when menu is actually used
 		// updateBackgroundImage();
+
+		// Show active menu item's background when menu opens
+		const menuBtn = document.querySelector('.menuBtn');
+		if (menuBtn) {
+			menuBtn.addEventListener('click', () => {
+				// Wait for menuOn class to be added
+				setTimeout(() => {
+					if (document.body.classList.contains('menuOn')) {
+						// Find menu item matching current URL and center it
+						const currentPath = window.location.pathname;
+						const matchingItemIndex = items.findIndex(item => item.url === currentPath);
+
+						if (matchingItemIndex !== -1) {
+							const totalItems = items.length;
+							const centerPosition = Math.floor(totalItems / 2);
+
+							// Find current position of the matching item
+							const currentPosition = currentState.indexOf(matchingItemIndex);
+
+							// Calculate rotation needed to center it
+							let rotationNeeded = centerPosition - currentPosition;
+
+							// Normalize rotation to shortest path
+							const halfItems = Math.floor(totalItems / 2);
+							if (rotationNeeded > halfItems) {
+								rotationNeeded -= totalItems;
+							} else if (rotationNeeded < -halfItems) {
+								rotationNeeded += totalItems;
+							}
+
+							// Rotate the state array
+							const normalizedRotation = ((rotationNeeded % totalItems) + totalItems) % totalItems;
+							for (let i = 0; i < normalizedRotation; i++) {
+								const last = currentState.pop();
+								currentState.unshift(last);
+							}
+
+							// Update positions to show centered item
+							updateContinuousPositions();
+						}
+
+						updateBackgroundImage();
+					}
+				}, 50);
+			});
+		}
 	}
 
 	if (document.readyState === 'loading') {

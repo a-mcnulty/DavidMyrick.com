@@ -12,6 +12,8 @@ PARCEL COMMANDS
 1. npm run dev (This will watch the src folder for all JS files during DEV and Tailwind Changes)
 2. npm run build (When ready to publish run the build command for PROD)
 
+php -S localhost:8000
+
 OPTIONAL PACKAGES
 
 1. masonry | npm i masonry-layout
