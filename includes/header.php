@@ -201,6 +201,36 @@ nav.takeover .dvd-stack {
 	width: 100%;
 	max-width: 800px;
 	height: auto;
+	position: absolute;
+	top: 14%;
+}
+
+/* Small screens */
+@media (max-width: 767px) {
+	nav.takeover .dvd-stack {
+		left: 30%;
+	}
+}
+
+/* Medium screens */
+@media (min-width: 768px) and (max-width: 1023px) {
+	nav.takeover .dvd-stack {
+		left: 40%;
+	}
+}
+
+/* Large screens */
+@media (min-width: 1024px) and (max-width: 1439px) {
+	nav.takeover .dvd-stack {
+		left: 55%;
+	}
+}
+
+/* Extra large screens */
+@media (min-width: 1440px) {
+	nav.takeover .dvd-stack {
+		left: 70%;
+	}
 }
 
 nav.takeover .box-text {
