@@ -318,6 +318,7 @@ nav.takeover svg {
 	const clickThreshold = 10;
 	let wheelTimeout = null;
 	let isWheelScrolling = false;
+	let isHandlingClick = false; // Prevent double-triggering on mobile
 
 	function initRender() {
 		const svg = document.querySelector('.dvd-stack');
@@ -407,16 +408,18 @@ nav.takeover svg {
 
 	function getInterpolatedPosition(itemIndex, offset) {
 		const currentPos = currentState.indexOf(itemIndex);
-		let targetPos = (currentPos + offset) % 5;
-		if (targetPos < 0) targetPos += 5;
+		const totalItems = items.length;
+		let targetPos = (currentPos + offset) % totalItems;
+		if (targetPos < 0) targetPos += totalItems;
 		return targetPos;
 	}
 
 	function interpolateConfig(pos) {
-		let floorPos = Math.floor(pos) % 5;
-		let ceilPos = Math.ceil(pos) % 5;
-		if (floorPos < 0) floorPos += 5;
-		if (ceilPos < 0) ceilPos += 5;
+		const totalPositions = positionConfigs.length;
+		let floorPos = Math.floor(pos) % totalPositions;
+		let ceilPos = Math.ceil(pos) % totalPositions;
+		if (floorPos < 0) floorPos += totalPositions;
+		if (ceilPos < 0) ceilPos += totalPositions;
 		const fraction = pos - Math.floor(pos);
 		const config1 = positionConfigs[floorPos] || positionConfigs[0];
 		const config2 = positionConfigs[ceilPos] || positionConfigs[0];
@@ -448,7 +451,8 @@ nav.takeover svg {
 			const group = svg.querySelector(`[data-item-id="${item.id}"]`);
 			if (!group) return;
 
-			const isWrapping = targetPos > 4.3;
+			const totalPositions = positionConfigs.length;
+			const isWrapping = targetPos > (totalPositions - 0.7);
 			group.style.opacity = isWrapping ? '0' : '1';
 			group.style.zIndex = isWrapping ? '-1' : '0';
 
@@ -510,6 +514,13 @@ nav.takeover svg {
 		isDragging = false;
 
 		if (dragDistance < clickThreshold) {
+			// Prevent double-triggering from both touch and mouse events on mobile
+			if (isHandlingClick) {
+				return;
+			}
+			isHandlingClick = true;
+			setTimeout(() => { isHandlingClick = false; }, 100);
+
 			scrollOffset = 0;
 			updateContinuousPositions();
 
@@ -534,21 +545,34 @@ nav.takeover svg {
 			if (clickedItemId !== null) {
 				const clickedItemIndex = items.findIndex(item => item.id === clickedItemId);
 				const currentPosition = currentState.indexOf(clickedItemIndex);
+				const totalItems = items.length;
+				const centerPosition = Math.floor(totalItems / 2);
+
+				console.log('Click debug:', {
+					clickedItem: items[clickedItemIndex].label,
+					clickedItemIndex,
+					currentPosition,
+					centerPosition,
+					isMobile,
+					currentState: currentState.map(idx => items[idx].label)
+				});
 
 				// If clicking active item, navigate
-				if (currentPosition === 2) {
+				if (currentPosition === centerPosition) {
 					window.location.href = items[clickedItemIndex].url;
 					return;
 				}
 
 				// Otherwise, bring to center
-				const targetPosition = 2;
-				let rotationNeeded = targetPosition - currentPosition;
-				if (rotationNeeded > 2) {
-					rotationNeeded -= 5;
-				} else if (rotationNeeded < -2) {
-					rotationNeeded += 5;
+				let rotationNeeded = centerPosition - currentPosition;
+				const halfItems = Math.floor(totalItems / 2);
+				if (rotationNeeded > halfItems) {
+					rotationNeeded -= totalItems;
+				} else if (rotationNeeded < -halfItems) {
+					rotationNeeded += totalItems;
 				}
+
+				console.log('Rotation needed:', rotationNeeded);
 				animateToOffset(rotationNeeded);
 				return;
 			}
@@ -604,7 +628,8 @@ nav.takeover svg {
 
 	function syncStateToOffset() {
 		const roundedOffset = Math.round(scrollOffset);
-		const normalizedOffset = ((roundedOffset % 5) + 5) % 5;
+		const totalItems = items.length;
+		const normalizedOffset = ((roundedOffset % totalItems) + totalItems) % totalItems;
 		for (let i = 0; i < normalizedOffset; i++) {
 			const last = currentState.pop();
 			currentState.unshift(last);
