@@ -167,6 +167,11 @@ nav.takeover > ul {
 	display: none !important;
 }
 
+/* Hide logo when menu is open */
+.menuOn .logo {
+	opacity: 0;
+}
+
 /* Fix: Make nav.takeover background transparent and non-blocking when menu is closed on homepage */
 body.homepage:not(.menuOn) nav.takeover {
 	background-color: transparent;
