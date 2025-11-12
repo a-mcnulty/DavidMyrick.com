@@ -133,20 +133,20 @@ $logoMark = getFirstImage(719);
 				<defs>
 					<!-- Gradients for 3D effect - Monochromatic with ~60% opacity -->
 					<linearGradient id="grayFront" x1="0%" y1="0%" x2="0%" y2="100%">
-						<stop offset="0%" style="stop-color:rgba(220, 220, 220, 0.60);stop-opacity:1" />
-						<stop offset="100%" style="stop-color:rgba(200, 200, 200, 0.60);stop-opacity:1" />
+						<stop offset="0%" style="stop-color:rgba(255, 255, 255, 1);stop-opacity:1" />
+						<stop offset="100%" style="stop-color:rgba(255, 255, 255, 1);stop-opacity:1" />
 					</linearGradient>
 					<linearGradient id="grayTop" x1="0%" y1="0%" x2="0%" y2="100%">
-						<stop offset="0%" style="stop-color:rgba(160, 160, 160, 0.60);stop-opacity:1" />
-						<stop offset="100%" style="stop-color:rgba(140, 140, 140, 0.60);stop-opacity:1" />
+						<stop offset="0%" style="stop-color:rgba(0, 0, 0, 1);stop-opacity:1" />
+						<stop offset="100%" style="stop-color:rgba(0, 0, 0, 1);stop-opacity:1" />
 					</linearGradient>
 					<linearGradient id="yellowFront" x1="0%" y1="0%" x2="0%" y2="100%">
-						<stop offset="0%" style="stop-color:rgba(255, 255, 255, 0.60);stop-opacity:1" />
-						<stop offset="100%" style="stop-color:rgba(240, 240, 240, 0.60);stop-opacity:1" />
+						<stop offset="0%" style="stop-color:rgba(255, 255, 255, 1);stop-opacity:1" />
+						<stop offset="100%" style="stop-color:rgba(255, 255, 255, 1);stop-opacity:1" />
 					</linearGradient>
 					<linearGradient id="yellowTop" x1="0%" y1="0%" x2="0%" y2="100%">
-						<stop offset="0%" style="stop-color:rgba(200, 200, 200, 0.60);stop-opacity:1" />
-						<stop offset="100%" style="stop-color:rgba(180, 180, 180, 0.60);stop-opacity:1" />
+						<stop offset="0%" style="stop-color:rgba(255, 255, 255, 1);stop-opacity:1" />
+						<stop offset="100%" style="stop-color:rgba(, 255, 255, 1);stop-opacity:1" />
 					</linearGradient>
 				</defs>
 
@@ -202,34 +202,19 @@ nav.takeover .dvd-stack {
 	max-width: 800px;
 	height: auto;
 	position: absolute;
-	top: 14%;
-}
-
-/* Small screens */
-@media (max-width: 767px) {
-	nav.takeover .dvd-stack {
-		left: 30%;
-	}
 }
 
 /* Medium screens */
-@media (min-width: 768px) and (max-width: 1023px) {
-	nav.takeover .dvd-stack {
+@media (min-width: 768px) and (max-width: 1439px) {
+	nav.takeover .svg-menu-container {
 		left: 40%;
-	}
-}
-
-/* Large screens */
-@media (min-width: 1024px) and (max-width: 1439px) {
-	nav.takeover .dvd-stack {
-		left: 55%;
 	}
 }
 
 /* Extra large screens */
 @media (min-width: 1440px) {
-	nav.takeover .dvd-stack {
-		left: 70%;
+	nav.takeover .svg-menu-container {
+		left: 46%;
 	}
 }
 
@@ -375,7 +360,7 @@ nav.takeover svg {
 
 			const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
 			text.classList.add('box-text');
-			text.setAttribute('fill', '#5a5852');
+			text.setAttribute('fill', '#111');
 			text.setAttribute('text-anchor', 'start');
 			text.setAttribute('dominant-baseline', 'middle');
 			text.textContent = item.label;
