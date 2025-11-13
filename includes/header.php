@@ -307,20 +307,20 @@ nav.takeover svg {
 
 	// Desktop position configurations - 5 positions for 5 menu items
 	const desktopPositionConfigs = [
-		{ frontRect: { x: 200, y: 175, width: 400, height: 38 }, trapezoid: { points: "200,213 600,213 570,223 230,223", onBottom: true }, textX: 220, textY: 191, gradient: 'gray' },
-		{ frontRect: { x: 150, y: 260, width: 500, height: 38 }, trapezoid: { points: "150,298 650,298 600,308 200,308", onBottom: true }, textX: 170, textY: 276, gradient: 'gray' },
+		{ frontRect: { x: 200, y: 174.66, width: 400, height: 32.68 }, trapezoid: { points: "200,207.34 600,207.34 570,217.34 230,217.34", onBottom: true }, textX: 220, textY: 191, gradient: 'gray' },
+		{ frontRect: { x: 150, y: 259.66, width: 500, height: 32.68 }, trapezoid: { points: "150,292.34 650,292.34 600,302.34 200,302.34", onBottom: true }, textX: 170, textY: 276, gradient: 'gray' },
 		{ frontRect: { x: 125, y: 362.5, width: 550, height: 175 }, trapezoid: { points: "175,362.5 625,362.5 625,537.5 175,537.5", onBottom: true }, textX: 145, textY: 450, gradient: 'yellow', hideTrapezoid: true },
-		{ frontRect: { x: 150, y: 608, width: 500, height: 38 }, trapezoid: { points: "200,599 600,599 650,608 150,608", onBottom: false }, textX: 170, textY: 624, gradient: 'gray' },
-		{ frontRect: { x: 200, y: 693, width: 400, height: 38 }, trapezoid: { points: "230,684 570,684 600,693 200,693", onBottom: false }, textX: 220, textY: 709, gradient: 'gray' }
+		{ frontRect: { x: 150, y: 607.66, width: 500, height: 32.68 }, trapezoid: { points: "200,598.66 600,598.66 650,607.66 150,607.66", onBottom: false }, textX: 170, textY: 624, gradient: 'gray' },
+		{ frontRect: { x: 200, y: 692.66, width: 400, height: 32.68 }, trapezoid: { points: "230,683.66 570,683.66 600,692.66 200,692.66", onBottom: false }, textX: 220, textY: 709, gradient: 'gray' }
 	];
 
 	// Mobile position configurations - larger boxes with proper spacing
 	const mobilePositionConfigs = [
-		{ frontRect: { x: 200, y: 102, width: 400, height: 60 }, trapezoid: { points: "200,162 600,162 570,177 230,177", onBottom: true }, textX: 220, textY: 127, gradient: 'gray' },
-		{ frontRect: { x: 150, y: 208, width: 500, height: 60 }, trapezoid: { points: "150,268 650,268 600,283 200,283", onBottom: true }, textX: 170, textY: 233, gradient: 'gray' },
+		{ frontRect: { x: 200, y: 101.2, width: 400, height: 51.6 }, trapezoid: { points: "200,152.8 600,152.8 570,167.8 230,167.8", onBottom: true }, textX: 220, textY: 127, gradient: 'gray' },
+		{ frontRect: { x: 150, y: 207.2, width: 500, height: 51.6 }, trapezoid: { points: "150,258.8 650,258.8 600,273.8 200,273.8", onBottom: true }, textX: 170, textY: 233, gradient: 'gray' },
 		{ frontRect: { x: 125, y: 352, width: 550, height: 196 }, trapezoid: { points: "175,352 625,352 625,548 175,548", onBottom: true }, textX: 145, textY: 450, gradient: 'yellow', hideTrapezoid: true },
-		{ frontRect: { x: 150, y: 633, width: 500, height: 60 }, trapezoid: { points: "200,617 600,617 650,633 150,633", onBottom: false }, textX: 170, textY: 658, gradient: 'gray' },
-		{ frontRect: { x: 200, y: 739, width: 400, height: 60 }, trapezoid: { points: "230,724 570,724 600,739 200,739", onBottom: false }, textX: 220, textY: 765, gradient: 'gray' }
+		{ frontRect: { x: 150, y: 632.2, width: 500, height: 51.6 }, trapezoid: { points: "200,616.2 600,616.2 650,632.2 150,632.2", onBottom: false }, textX: 170, textY: 658, gradient: 'gray' },
+		{ frontRect: { x: 200, y: 739.2, width: 400, height: 51.6 }, trapezoid: { points: "230,724.2 570,724.2 600,739.2 200,739.2", onBottom: false }, textX: 220, textY: 765, gradient: 'gray' }
 	];
 
 	// Check screen size and select appropriate config
