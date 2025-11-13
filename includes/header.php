@@ -340,6 +340,11 @@ nav.takeover svg {
 	let isWheelScrolling = false;
 	let isHandlingClick = false; // Prevent double-triggering on mobile
 
+	// Homepage auto-open menu variables
+	const isHomepage = window.location.pathname === '/';
+	let autoOpenTimer = null;
+	let hasAutoOpened = false;
+
 	function initRender() {
 		const svg = document.querySelector('.dvd-stack');
 		if (!svg) return;
@@ -668,6 +673,45 @@ nav.takeover svg {
 		updateBackgroundImage();
 	}
 
+	// Homepage auto-open menu functions
+	function openMenu() {
+		const menuBtn = document.querySelector('.menuBtn');
+		if (menuBtn && !document.body.classList.contains('menuOn')) {
+			menuBtn.click();
+		}
+	}
+
+	function stopAutoOpenTimer() {
+		if (autoOpenTimer) {
+			clearTimeout(autoOpenTimer);
+			autoOpenTimer = null;
+		}
+	}
+
+	function startAutoOpenTimer() {
+		if (!isHomepage || hasAutoOpened) return;
+
+		autoOpenTimer = setTimeout(() => {
+			if (!document.body.classList.contains('menuOn')) {
+				hasAutoOpened = true;
+				openMenu();
+			}
+		}, 15000); // 15 seconds
+	}
+
+	// Homepage scroll gesture detection (wheel or touch swipe)
+	function handleHomepageScrollGesture(e) {
+		if (!isHomepage || document.body.classList.contains('menuOn')) return;
+
+		// Stop timer on first gesture
+		if (!hasAutoOpened) {
+			stopAutoOpenTimer();
+			hasAutoOpened = true;
+		}
+
+		openMenu();
+	}
+
 	function handleResize() {
 		const newIsMobile = window.innerWidth <= 767;
 		// Only update if we crossed the breakpoint
@@ -693,6 +737,12 @@ nav.takeover svg {
 		document.addEventListener('touchend', handleEnd);
 		svg.addEventListener('wheel', handleWheel, { passive: false });
 		window.addEventListener('resize', handleResize);
+
+		// Homepage auto-open: detect scroll gestures (wheel or touch swipe)
+		if (isHomepage) {
+			window.addEventListener('wheel', handleHomepageScrollGesture, { passive: true });
+			window.addEventListener('touchmove', handleHomepageScrollGesture, { passive: true });
+		}
 
 		initRender();
 		// Don't call updateBackgroundImage() on page load - only when menu is actually used
@@ -742,6 +792,23 @@ nav.takeover svg {
 					}
 				}, 50);
 			});
+		}
+
+		// Homepage auto-open: stop timer when menu opens and start timer
+		const originalMenuBtn = document.querySelector('.menuBtn');
+		if (originalMenuBtn && isHomepage) {
+			const originalClickHandler = originalMenuBtn.onclick;
+			originalMenuBtn.addEventListener('click', () => {
+				setTimeout(() => {
+					if (document.body.classList.contains('menuOn') && !hasAutoOpened) {
+						stopAutoOpenTimer();
+						hasAutoOpened = true;
+					}
+				}, 100);
+			});
+
+			// Start the auto-open timer
+			startAutoOpenTimer();
 		}
 	}
 
