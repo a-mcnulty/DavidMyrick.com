@@ -204,7 +204,7 @@ nav.takeover .svg-menu-container {
 
 nav.takeover .dvd-stack {
 	width: 100%;
-	max-width: 800px;
+	max-width: 1000px;
 	height: auto;
 	position: absolute;
 }
@@ -305,22 +305,22 @@ nav.takeover svg {
 	// Current rotation state - array of item indices with center position at index 2
 	let currentState = [0, 1, 2, 3, 4]; // Middle item (index 2) at center
 
-	// Desktop position configurations - 5 positions for 5 menu items
+	// Desktop position configurations - 5 positions for 5 menu items (scaled 1.25x from center)
 	const desktopPositionConfigs = [
-		{ frontRect: { x: 200, y: 174.66, width: 400, height: 32.68 }, trapezoid: { points: "200,207.34 600,207.34 570,217.34 230,217.34", onBottom: true }, textX: 220, textY: 191, gradient: 'gray' },
-		{ frontRect: { x: 150, y: 259.66, width: 500, height: 32.68 }, trapezoid: { points: "150,292.34 650,292.34 600,302.34 200,302.34", onBottom: true }, textX: 170, textY: 276, gradient: 'gray' },
-		{ frontRect: { x: 125, y: 362.5, width: 550, height: 175 }, trapezoid: { points: "175,362.5 625,362.5 625,537.5 175,537.5", onBottom: true }, textX: 145, textY: 450, gradient: 'yellow', hideTrapezoid: true },
-		{ frontRect: { x: 150, y: 607.66, width: 500, height: 32.68 }, trapezoid: { points: "200,598.66 600,598.66 650,607.66 150,607.66", onBottom: false }, textX: 170, textY: 624, gradient: 'gray' },
-		{ frontRect: { x: 200, y: 692.66, width: 400, height: 32.68 }, trapezoid: { points: "230,683.66 570,683.66 600,692.66 200,692.66", onBottom: false }, textX: 220, textY: 709, gradient: 'gray' }
+		{ frontRect: { x: 150, y: 170.575, width: 500, height: 40.85 }, trapezoid: { points: "150,211.425 650,211.425 612.5,223.925 187.5,223.925", onBottom: true }, textX: 175, textY: 191, gradient: 'gray' },
+		{ frontRect: { x: 87.5, y: 255.575, width: 625, height: 40.85 }, trapezoid: { points: "87.5,296.425 712.5,296.425 650,308.925 150,308.925", onBottom: true }, textX: 112.5, textY: 276, gradient: 'gray' },
+		{ frontRect: { x: 56.25, y: 340.625, width: 687.5, height: 218.75 }, trapezoid: { points: "56.25,340.625 743.75,340.625 743.75,559.375 56.25,559.375", onBottom: true }, textX: 81.25, textY: 450, gradient: 'yellow', hideTrapezoid: true },
+		{ frontRect: { x: 87.5, y: 603.575, width: 625, height: 40.85 }, trapezoid: { points: "150,592.325 650,592.325 712.5,603.575 87.5,603.575", onBottom: false }, textX: 112.5, textY: 624, gradient: 'gray' },
+		{ frontRect: { x: 150, y: 688.575, width: 500, height: 40.85 }, trapezoid: { points: "187.5,677.325 612.5,677.325 650,688.575 150,688.575", onBottom: false }, textX: 175, textY: 709, gradient: 'gray' }
 	];
 
-	// Mobile position configurations - larger boxes with proper spacing
+	// Mobile position configurations - larger boxes with proper spacing (scaled 1.25x from center)
 	const mobilePositionConfigs = [
-		{ frontRect: { x: 200, y: 101.2, width: 400, height: 51.6 }, trapezoid: { points: "200,152.8 600,152.8 570,167.8 230,167.8", onBottom: true }, textX: 220, textY: 127, gradient: 'gray' },
-		{ frontRect: { x: 150, y: 207.2, width: 500, height: 51.6 }, trapezoid: { points: "150,258.8 650,258.8 600,273.8 200,273.8", onBottom: true }, textX: 170, textY: 233, gradient: 'gray' },
-		{ frontRect: { x: 125, y: 352, width: 550, height: 196 }, trapezoid: { points: "175,352 625,352 625,548 175,548", onBottom: true }, textX: 145, textY: 450, gradient: 'yellow', hideTrapezoid: true },
-		{ frontRect: { x: 150, y: 632.2, width: 500, height: 51.6 }, trapezoid: { points: "200,616.2 600,616.2 650,632.2 150,632.2", onBottom: false }, textX: 170, textY: 658, gradient: 'gray' },
-		{ frontRect: { x: 200, y: 739.2, width: 400, height: 51.6 }, trapezoid: { points: "230,724.2 570,724.2 600,739.2 200,739.2", onBottom: false }, textX: 220, textY: 765, gradient: 'gray' }
+		{ frontRect: { x: 150, y: 94.75, width: 500, height: 64.5 }, trapezoid: { points: "150,159.25 650,159.25 612.5,178 187.5,178", onBottom: true }, textX: 400, textY: 127, gradient: 'gray' },
+		{ frontRect: { x: 87.5, y: 200.75, width: 625, height: 64.5 }, trapezoid: { points: "87.5,265.25 712.5,265.25 650,284 150,284", onBottom: true }, textX: 400, textY: 233, gradient: 'gray' },
+		{ frontRect: { x: 56.25, y: 327.5, width: 687.5, height: 245 }, trapezoid: { points: "56.25,327.5 743.75,327.5 743.75,572.5 56.25,572.5", onBottom: true }, textX: 400, textY: 450, gradient: 'yellow', hideTrapezoid: true },
+		{ frontRect: { x: 87.5, y: 625.75, width: 625, height: 64.5 }, trapezoid: { points: "150,605.75 650,605.75 712.5,625.75 87.5,625.75", onBottom: false }, textX: 400, textY: 658, gradient: 'gray' },
+		{ frontRect: { x: 150, y: 732.75, width: 500, height: 64.5 }, trapezoid: { points: "187.5,714 612.5,714 650,732.75 150,732.75", onBottom: false }, textX: 400, textY: 765, gradient: 'gray' }
 	];
 
 	// Check screen size and select appropriate config
@@ -366,7 +366,7 @@ nav.takeover svg {
 			const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
 			text.classList.add('box-text');
 			text.setAttribute('fill', '#111');
-			text.setAttribute('text-anchor', 'start');
+			text.setAttribute('text-anchor', isMobile ? 'middle' : 'start');
 			text.setAttribute('dominant-baseline', 'middle');
 			text.textContent = item.label;
 			group.appendChild(text);
@@ -488,6 +488,7 @@ nav.takeover svg {
 
 			text.setAttribute('x', config.textX);
 			text.setAttribute('y', config.textY);
+			text.setAttribute('text-anchor', isMobile ? 'middle' : 'start');
 
 			// Dynamic font sizing based on box height
 			const baseFontSize = config.frontRect.height * 0.5;
