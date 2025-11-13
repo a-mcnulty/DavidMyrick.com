@@ -307,20 +307,20 @@ nav.takeover svg {
 
 	// Desktop position configurations - 5 positions for 5 menu items
 	const desktopPositionConfigs = [
-		{ frontRect: { x: 200, y: 126, width: 400, height: 38 }, trapezoid: { points: "200,164 600,164 570,176 230,176", onBottom: true }, textX: 220, textY: 145, gradient: 'gray' },
-		{ frontRect: { x: 150, y: 226, width: 500, height: 38 }, trapezoid: { points: "150,264 650,264 600,276 200,276", onBottom: true }, textX: 170, textY: 245, gradient: 'gray' },
-		{ frontRect: { x: 125, y: 325, width: 550, height: 250 }, trapezoid: { points: "175,325 625,325 625,325 175,325", onBottom: true }, textX: 145, textY: 450, gradient: 'yellow', hideTrapezoid: true },
-		{ frontRect: { x: 150, y: 636, width: 500, height: 38 }, trapezoid: { points: "200,625 600,625 650,636 150,636", onBottom: false }, textX: 170, textY: 655, gradient: 'gray' },
-		{ frontRect: { x: 200, y: 736, width: 400, height: 38 }, trapezoid: { points: "230,725 570,725 600,736 200,736", onBottom: false }, textX: 220, textY: 755, gradient: 'gray' }
+		{ frontRect: { x: 200, y: 175, width: 400, height: 38 }, trapezoid: { points: "200,213 600,213 570,223 230,223", onBottom: true }, textX: 220, textY: 191, gradient: 'gray' },
+		{ frontRect: { x: 150, y: 260, width: 500, height: 38 }, trapezoid: { points: "150,298 650,298 600,308 200,308", onBottom: true }, textX: 170, textY: 276, gradient: 'gray' },
+		{ frontRect: { x: 125, y: 362.5, width: 550, height: 175 }, trapezoid: { points: "175,362.5 625,362.5 625,537.5 175,537.5", onBottom: true }, textX: 145, textY: 450, gradient: 'yellow', hideTrapezoid: true },
+		{ frontRect: { x: 150, y: 608, width: 500, height: 38 }, trapezoid: { points: "200,599 600,599 650,608 150,608", onBottom: false }, textX: 170, textY: 624, gradient: 'gray' },
+		{ frontRect: { x: 200, y: 693, width: 400, height: 38 }, trapezoid: { points: "230,684 570,684 600,693 200,693", onBottom: false }, textX: 220, textY: 709, gradient: 'gray' }
 	];
 
 	// Mobile position configurations - larger boxes with proper spacing
 	const mobilePositionConfigs = [
-		{ frontRect: { x: 200, y: 40, width: 400, height: 60 }, trapezoid: { points: "200,100 600,100 570,118 230,118", onBottom: true }, textX: 220, textY: 70, gradient: 'gray' },
-		{ frontRect: { x: 150, y: 165, width: 500, height: 60 }, trapezoid: { points: "150,225 650,225 600,243 200,243", onBottom: true }, textX: 170, textY: 195, gradient: 'gray' },
-		{ frontRect: { x: 125, y: 300, width: 550, height: 280 }, trapezoid: { points: "175,300 625,300 625,300 175,300", onBottom: true }, textX: 145, textY: 450, gradient: 'yellow', hideTrapezoid: true },
-		{ frontRect: { x: 150, y: 665, width: 500, height: 60 }, trapezoid: { points: "200,647 600,647 650,665 150,665", onBottom: false }, textX: 170, textY: 695, gradient: 'gray' },
-		{ frontRect: { x: 200, y: 790, width: 400, height: 60 }, trapezoid: { points: "230,772 570,772 600,790 200,790", onBottom: false }, textX: 220, textY: 820, gradient: 'gray' }
+		{ frontRect: { x: 200, y: 102, width: 400, height: 60 }, trapezoid: { points: "200,162 600,162 570,177 230,177", onBottom: true }, textX: 220, textY: 127, gradient: 'gray' },
+		{ frontRect: { x: 150, y: 208, width: 500, height: 60 }, trapezoid: { points: "150,268 650,268 600,283 200,283", onBottom: true }, textX: 170, textY: 233, gradient: 'gray' },
+		{ frontRect: { x: 125, y: 352, width: 550, height: 196 }, trapezoid: { points: "175,352 625,352 625,548 175,548", onBottom: true }, textX: 145, textY: 450, gradient: 'yellow', hideTrapezoid: true },
+		{ frontRect: { x: 150, y: 633, width: 500, height: 60 }, trapezoid: { points: "200,617 600,617 650,633 150,633", onBottom: false }, textX: 170, textY: 658, gradient: 'gray' },
+		{ frontRect: { x: 200, y: 739, width: 400, height: 60 }, trapezoid: { points: "230,724 570,724 600,739 200,739", onBottom: false }, textX: 220, textY: 765, gradient: 'gray' }
 	];
 
 	// Check screen size and select appropriate config
