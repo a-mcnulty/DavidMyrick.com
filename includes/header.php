@@ -386,14 +386,23 @@ nav.takeover svg {
 		const activeItem = items[activeItemIndex];
 		const cells = backgroundContainer.querySelectorAll('.cell');
 
+		if (!cells || cells.length === 0) return;
+
+		let matchFound = false;
 		cells.forEach(cell => {
 			const cellId = parseInt(cell.getAttribute('data-id'));
 			if (cellId === activeItem.catId) {
 				cell.classList.add('active');
+				matchFound = true;
 			} else {
 				cell.classList.remove('active');
 			}
 		});
+
+		// Fallback: if no match found, activate the first cell to ensure something shows
+		if (!matchFound && cells.length > 0) {
+			cells[0].classList.add('active');
+		}
 	}
 
 	function interpolatePoints(from, to, progress) {
