@@ -305,13 +305,13 @@ nav.takeover svg {
 	// Current rotation state - array of item indices with center position at index 2
 	let currentState = [0, 1, 2, 3, 4]; // Middle item (index 2) at center
 
-	// Desktop position configurations - 5 positions for 5 menu items (scaled 1.25x from center)
+	// Desktop position configurations - 5 positions for 5 menu items (scaled 1.1x from center, 12% smaller than before)
 	const desktopPositionConfigs = [
-		{ frontRect: { x: 150, y: 170.575, width: 500, height: 40.85 }, trapezoid: { points: "150,211.425 650,211.425 612.5,223.925 187.5,223.925", onBottom: true }, textX: 175, textY: 191, gradient: 'gray' },
-		{ frontRect: { x: 87.5, y: 255.575, width: 625, height: 40.85 }, trapezoid: { points: "87.5,296.425 712.5,296.425 650,308.925 150,308.925", onBottom: true }, textX: 112.5, textY: 276, gradient: 'gray' },
-		{ frontRect: { x: 56.25, y: 340.625, width: 687.5, height: 218.75 }, trapezoid: { points: "56.25,340.625 743.75,340.625 743.75,559.375 56.25,559.375", onBottom: true }, textX: 81.25, textY: 450, gradient: 'yellow', hideTrapezoid: true },
-		{ frontRect: { x: 87.5, y: 603.575, width: 625, height: 40.85 }, trapezoid: { points: "150,592.325 650,592.325 712.5,603.575 87.5,603.575", onBottom: false }, textX: 112.5, textY: 624, gradient: 'gray' },
-		{ frontRect: { x: 150, y: 688.575, width: 500, height: 40.85 }, trapezoid: { points: "187.5,677.325 612.5,677.325 650,688.575 150,688.575", onBottom: false }, textX: 175, textY: 709, gradient: 'gray' }
+		{ frontRect: { x: 180, y: 173.026, width: 440, height: 35.948 }, trapezoid: { points: "180,208.974 620,208.974 587,219.974 213,219.974", onBottom: true }, textX: 205, textY: 191, gradient: 'gray' },
+		{ frontRect: { x: 125, y: 258.026, width: 550, height: 35.948 }, trapezoid: { points: "125,293.974 675,293.974 650,304.974 150,304.974", onBottom: true }, textX: 150, textY: 276, gradient: 'gray' },
+		{ frontRect: { x: 97.5, y: 353.75, width: 605, height: 192.5 }, trapezoid: { points: "97.5,353.75 702.5,353.75 702.5,546.25 97.5,546.25", onBottom: true }, textX: 122.5, textY: 450, gradient: 'yellow', hideTrapezoid: true },
+		{ frontRect: { x: 125, y: 606.026, width: 550, height: 35.948 }, trapezoid: { points: "150,595.026 650,595.026 675,606.026 125,606.026", onBottom: false }, textX: 150, textY: 624, gradient: 'gray' },
+		{ frontRect: { x: 180, y: 691.026, width: 440, height: 35.948 }, trapezoid: { points: "213,680.026 587,680.026 620,691.026 180,691.026", onBottom: false }, textX: 205, textY: 709, gradient: 'gray' }
 	];
 
 	// Mobile position configurations - larger boxes with proper spacing (scaled 1.25x from center)
