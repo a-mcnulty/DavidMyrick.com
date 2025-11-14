@@ -54,7 +54,7 @@
 
             $hasAutoVideo = false;
             $videoStr = "";
-            if ($itemVideo['hoverFile'] != "" or $itemVideo['url_loop_desktop'] != "") {
+            if ($itemVideo && ($itemVideo['hoverFile'] != "" or $itemVideo['url_loop_desktop'] != "")) {
                 $hasAutoVideo = true;
                 if ($itemVideo['bgVideoType'] === "view") {
                     $cellClass .= " autovideo";

@@ -176,30 +176,33 @@ nav.takeover > ul {
 body.homepage:not(.menuOn) nav.takeover {
 	background-color: transparent;
 	pointer-events: none;
-	display: none;
+	visibility: hidden;
 }
 
 /* Restore nav when menu is open */
 body.homepage.menuOn nav.takeover {
 	background-color: #ffffffe6;
 	pointer-events: all;
-	display: block;
+	visibility: visible;
 }
 
 /* SVG Menu Container */
 nav.takeover .svg-menu-container {
-	display: none; /* Hidden by default when menu is closed */
+	display: flex;
 	justify-content: center;
 	align-items: center;
 	width: 100%;
 	height: 100%;
 	position: relative;
 	z-index: 2;
+	transform: translateX(100%); /* Start off-screen to the right */
+	transition: transform 0.5s ease-in-out;
+	pointer-events: none; /* Prevent interaction when off-screen */
 }
 
-/* Show SVG menu only when menu is open */
+/* Slide SVG menu in when menu is open */
 .menuOn nav.takeover .svg-menu-container {
-	display: flex;
+	pointer-events: all; /* Enable interaction when visible */
 }
 
 nav.takeover .dvd-stack {
@@ -211,15 +214,15 @@ nav.takeover .dvd-stack {
 
 /* Medium screens */
 @media (min-width: 768px) and (max-width: 1439px) {
-	nav.takeover .svg-menu-container {
-		left: 40%;
+	.menuOn nav.takeover .svg-menu-container {
+		transform: translateX(46%);
 	}
 }
 
 /* Extra large screens */
 @media (min-width: 1440px) {
-	nav.takeover .svg-menu-container {
-		left: 46%;
+	.menuOn nav.takeover .svg-menu-container {
+		transform: translateX(46%);
 	}
 }
 
@@ -256,6 +259,10 @@ nav.takeover svg {
 
 /* Mobile adjustments */
 @media (max-width: 767px) {
+	.menuOn nav.takeover .svg-menu-container {
+		transform: translateX(0);
+	}
+
 	nav.takeover .dvd-stack {
 		max-width: 100%;
 		padding: 0 20px;
