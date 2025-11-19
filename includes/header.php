@@ -237,11 +237,18 @@ nav.takeover .box-text {
 
 nav.takeover .dvd-box {
 	cursor: pointer;
-	transition: opacity 0.3s ease;
+	transition: transform 0.3s ease, opacity 0.3s ease;
+	transform-origin: center;
 }
 
 nav.takeover .dvd-box.wrapping {
 	opacity: 0;
+}
+
+/* Hover effect - scale up by 5% */
+nav.takeover .dvd-box:hover,
+nav.takeover .dvd-box.touch-active {
+	transform: scale(1.05);
 }
 
 /* Remove CSS transitions - JavaScript handles all animation */
@@ -762,6 +769,24 @@ nav.takeover svg {
 		document.addEventListener('touchend', handleEnd);
 		svg.addEventListener('wheel', handleWheel, { passive: false });
 		window.addEventListener('resize', handleResize);
+
+		// Add touch support for hover effect on mobile
+		svg.addEventListener('touchstart', (e) => {
+			const box = e.target.closest('.dvd-box');
+			if (box && !isDragging) {
+				// Remove touch-active from all boxes
+				svg.querySelectorAll('.dvd-box').forEach(b => b.classList.remove('touch-active'));
+				// Add to touched box
+				box.classList.add('touch-active');
+			}
+		}, { passive: true });
+
+		svg.addEventListener('touchend', () => {
+			// Remove touch-active from all boxes after a delay
+			setTimeout(() => {
+				svg.querySelectorAll('.dvd-box').forEach(b => b.classList.remove('touch-active'));
+			}, 200);
+		}, { passive: true });
 
 		// Homepage auto-open: detect scroll gestures (wheel or touch swipe)
 		if (isHomepage) {
