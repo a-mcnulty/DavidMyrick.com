@@ -175,15 +175,16 @@ nav.takeover > ul {
 /* Fix: Make nav.takeover background transparent and non-blocking when menu is closed on homepage */
 body.homepage:not(.menuOn) nav.takeover {
 	background-color: transparent;
-	pointer-events: none;
-	visibility: hidden;
+	pointer-events: none !important;
+	/* No visibility change - let the transform handle hiding */
+	transition: background-color 0.5s;
 }
 
 /* Restore nav when menu is open */
 body.homepage.menuOn nav.takeover {
 	background-color: #ffffffe6;
 	pointer-events: all;
-	visibility: visible;
+	transition: background-color 0.5s;
 }
 
 /* SVG Menu Container */
@@ -593,6 +594,11 @@ nav.takeover svg {
 			}
 
 			if (clickedItemId !== null) {
+				e.preventDefault(); // Prevent any default navigation
+				e.stopPropagation(); // Stop event bubbling
+
+				console.log('Menu item clicked - preventing navigation');
+
 				const clickedItemIndex = items.findIndex(item => item.id === clickedItemId);
 				const currentPosition = currentState.indexOf(clickedItemIndex);
 				const totalItems = items.length;
@@ -609,11 +615,23 @@ nav.takeover svg {
 
 				// If clicking active item, close menu then navigate after animation
 				if (currentPosition === centerPosition) {
-					// Close the menu to trigger slide-off animation
-					document.body.classList.remove('menuOn');
+					console.log('Active item clicked - starting slide-off animation');
 
-					// Wait for slide-off animation to complete (500ms) before navigating
+					// Force the slide-off animation
+					const menuContainer = document.querySelector('.svg-menu-container');
+					if (menuContainer) {
+						menuContainer.style.transition = 'transform 0.5s ease-in-out';
+						requestAnimationFrame(() => {
+							menuContainer.style.transform = 'translateX(100%)';
+							console.log('Slide-off animation triggered');
+						});
+					}
+
+					// Wait for slide-off animation to complete (500ms) before removing menuOn and navigating
 					setTimeout(() => {
+						// Close the menu after animation completes
+						document.body.classList.remove('menuOn');
+						console.log('Navigating after animation');
 						window.location.href = items[clickedItemIndex].url;
 					}, 500);
 					return;
@@ -631,9 +649,21 @@ nav.takeover svg {
 				console.log('Rotation needed:', rotationNeeded);
 				const targetUrl = items[clickedItemIndex].url;
 				animateToOffset(rotationNeeded, () => {
-					// After rotation completes, close menu and navigate
-					document.body.classList.remove('menuOn');
+					console.log('Rotation complete - starting slide-off');
+
+					// Trigger the slide-off animation
+					const menuContainer = document.querySelector('.svg-menu-container');
+					if (menuContainer) {
+						menuContainer.style.transition = 'transform 0.5s ease-in-out';
+						requestAnimationFrame(() => {
+							menuContainer.style.transform = 'translateX(100%)';
+						});
+					}
+
+					// Wait for slide-off animation to complete before closing menu and navigating
 					setTimeout(() => {
+						document.body.classList.remove('menuOn');
+						console.log('Navigating after slide-off');
 						window.location.href = targetUrl;
 					}, 500);
 				});
@@ -760,6 +790,26 @@ nav.takeover svg {
 			setTimeout(init, 100);
 			return;
 		}
+
+		// Prevent any click events on the navigation from navigating
+		const nav = document.querySelector('nav.takeover');
+		if (nav) {
+			nav.addEventListener('click', (e) => {
+				// Only prevent if clicking on menu items, not the background
+				if (e.target.closest('.dvd-box') || e.target.closest('.dvd-stack')) {
+					e.preventDefault();
+					e.stopPropagation();
+					console.log('Nav click prevented');
+				}
+			}, true);
+		}
+
+		// Prevent any click events on the SVG from navigating
+		svg.addEventListener('click', (e) => {
+			e.preventDefault();
+			e.stopPropagation();
+			console.log('SVG click prevented');
+		});
 
 		svg.addEventListener('mousedown', handleStart);
 		document.addEventListener('mousemove', handleMove);
