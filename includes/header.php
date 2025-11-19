@@ -202,6 +202,7 @@ nav.takeover .svg-menu-container {
 
 /* Slide SVG menu in when menu is open */
 .menuOn nav.takeover .svg-menu-container {
+	transform: translateX(0);
 	pointer-events: all; /* Enable interaction when visible */
 }
 
@@ -599,13 +600,19 @@ nav.takeover svg {
 					currentState: currentState.map(idx => items[idx].label)
 				});
 
-				// If clicking active item, navigate
+				// If clicking active item, close menu then navigate after animation
 				if (currentPosition === centerPosition) {
-					window.location.href = items[clickedItemIndex].url;
+					// Close the menu to trigger slide-off animation
+					document.body.classList.remove('menuOn');
+
+					// Wait for slide-off animation to complete (500ms) before navigating
+					setTimeout(() => {
+						window.location.href = items[clickedItemIndex].url;
+					}, 500);
 					return;
 				}
 
-				// Otherwise, bring to center
+				// Otherwise, bring to center then navigate
 				let rotationNeeded = centerPosition - currentPosition;
 				const halfItems = Math.floor(totalItems / 2);
 				if (rotationNeeded > halfItems) {
@@ -615,7 +622,14 @@ nav.takeover svg {
 				}
 
 				console.log('Rotation needed:', rotationNeeded);
-				animateToOffset(rotationNeeded);
+				const targetUrl = items[clickedItemIndex].url;
+				animateToOffset(rotationNeeded, () => {
+					// After rotation completes, close menu and navigate
+					document.body.classList.remove('menuOn');
+					setTimeout(() => {
+						window.location.href = targetUrl;
+					}, 500);
+				});
 				return;
 			}
 			return;
@@ -646,7 +660,7 @@ nav.takeover svg {
 		}, 150);
 	}
 
-	function animateToOffset(targetOffset) {
+	function animateToOffset(targetOffset, callback) {
 		const startOffset = scrollOffset;
 		const distance = targetOffset - startOffset;
 		const duration = Math.min(500, Math.abs(distance) * 200);
@@ -663,6 +677,10 @@ nav.takeover svg {
 				requestAnimationFrame(animate);
 			} else {
 				syncStateToOffset();
+				// Execute callback after animation completes
+				if (callback) {
+					callback();
+				}
 			}
 		}
 		requestAnimationFrame(animate);
