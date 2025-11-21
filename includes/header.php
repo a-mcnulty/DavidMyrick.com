@@ -384,6 +384,10 @@ nav.takeover svg {
 	let autoOpenTimer = null;
 	let hasAutoOpened = false;
 
+	// Auto-rotation variables
+	let autoRotateInterval = null;
+	const autoRotateDelay = 7000; // 7 seconds
+
 	function initRender() {
 		const svg = document.querySelector('.dvd-stack');
 		if (!svg) return;
@@ -565,6 +569,9 @@ nav.takeover svg {
 		dragDistance = 0;
 		velocity = 0;
 		lastTimestamp = performance.now();
+
+		// Reset auto-rotation timer
+		resetAutoRotation();
 	}
 
 	function handleMove(e) {
@@ -715,6 +722,9 @@ nav.takeover svg {
 		scrollOffset += delta / pixelsPerPosition;
 		updateContinuousPositions();
 
+		// Reset auto-rotation timer
+		resetAutoRotation();
+
 		if (wheelTimeout) {
 			clearTimeout(wheelTimeout);
 		}
@@ -801,6 +811,33 @@ nav.takeover svg {
 		}
 
 		openMenu();
+	}
+
+	// Auto-rotation functions
+	function startAutoRotation() {
+		// Clear any existing interval
+		stopAutoRotation();
+
+		// Start new interval
+		autoRotateInterval = setInterval(() => {
+			if (document.body.classList.contains('menuOn') && !isDragging && !isWheelScrolling) {
+				// Rotate by 1 position (first item becomes last)
+				animateToOffset(1);
+			}
+		}, autoRotateDelay);
+	}
+
+	function stopAutoRotation() {
+		if (autoRotateInterval) {
+			clearInterval(autoRotateInterval);
+			autoRotateInterval = null;
+		}
+	}
+
+	function resetAutoRotation() {
+		if (document.body.classList.contains('menuOn')) {
+			startAutoRotation();
+		}
 	}
 
 	function handleResize() {
@@ -916,6 +953,9 @@ nav.takeover svg {
 					}
 
 					updateBackgroundImage();
+
+					// Start auto-rotation
+					startAutoRotation();
 				}
 			}, 50);
 		}
@@ -923,13 +963,31 @@ nav.takeover svg {
 		// Show active menu item's background when menu opens via menuBtn
 		const menuBtn = document.querySelector('.menuBtn');
 		if (menuBtn) {
-			menuBtn.addEventListener('click', handleMenuOpen);
+			menuBtn.addEventListener('click', () => {
+				// Check if menu is closing
+				if (document.body.classList.contains('menuOn')) {
+					// Menu is open, will close - stop rotation
+					stopAutoRotation();
+				} else {
+					// Menu is closed, will open - handle as normal
+					handleMenuOpen();
+				}
+			});
 		}
 
 		// Show active menu item's background when menu opens via logo
 		const pageTitle = document.querySelector('.pageTitle');
 		if (pageTitle) {
-			pageTitle.addEventListener('click', handleMenuOpen);
+			pageTitle.addEventListener('click', () => {
+				// Check if menu is closing
+				if (document.body.classList.contains('menuOn')) {
+					// Menu is open, will close - stop rotation
+					stopAutoRotation();
+				} else {
+					// Menu is closed, will open - handle as normal
+					handleMenuOpen();
+				}
+			});
 		}
 
 		// Homepage auto-open: stop timer when menu opens and start timer
