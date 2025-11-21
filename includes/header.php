@@ -149,19 +149,24 @@ $logoMark = getFirstImage(719);
 						<stop offset="100%" style="stop-color:rgba(, 255, 255, 1);stop-opacity:1" />
 					</linearGradient>
 				</defs>
-
-				<!-- Center alignment guideline (dashed) -->
-				<line x1="400" y1="0" x2="400" y2="900" stroke="rgba(138, 135, 130, 0.75)" stroke-width="2" stroke-dasharray="10,10" opacity="0.3"/>
-
 				<!-- Boxes will be dynamically rendered by JavaScript -->
 			</svg>
 		</div>
-
 	</nav>
-
 </header>
 
 <style>
+/* Expand menu button clickable area using pseudo-element */
+.menuBtn::before {
+	content: '';
+	position: absolute;
+	top: -20px;
+	right: -20px;
+	bottom: -20px;
+	left: -20px;
+	/* Invisible but clickable */
+}
+
 /* Hide old menu */
 nav.takeover > ul {
 	display: none !important;
@@ -177,34 +182,82 @@ body.homepage:not(.menuOn) nav.takeover {
 	background-color: transparent;
 	pointer-events: none !important;
 	/* No visibility change - let the transform handle hiding */
-	transition: background-color 0.5s;
+	transition: background-color 1.0s;
 }
 
 /* Restore nav when menu is open */
 body.homepage.menuOn nav.takeover {
 	background-color: #ffffffe6;
 	pointer-events: all;
-	transition: background-color 0.5s;
+	transition: background-color 1.0s;
 }
 
-/* SVG Menu Container */
+/* Keyframes for slide-in/out animations - Desktop */
+@keyframes slideInDesktop {
+	from {
+		transform: translateX(100%);
+	}
+	to {
+		transform: translateX(46%);
+	}
+}
+
+@keyframes slideOutDesktop {
+	from {
+		transform: translateX(46%);
+	}
+	to {
+		transform: translateX(100%);
+	}
+}
+
+/* Keyframes for slide-in/out animations - Mobile */
+@keyframes slideInMobile {
+	from {
+		transform: translateX(100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+
+@keyframes slideOutMobile {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(100%);
+	}
+}
+
+/* SVG Menu Container - hidden by default */
 nav.takeover .svg-menu-container {
-	display: flex;
+	display: none;
 	justify-content: center;
 	align-items: center;
 	width: 100%;
 	height: 100%;
 	position: relative;
 	z-index: 2;
-	transform: translateX(100%); /* Start off-screen to the right */
-	transition: transform 0.5s ease-in-out;
-	pointer-events: none; /* Prevent interaction when off-screen */
+	pointer-events: none;
 }
 
-/* Slide SVG menu in when menu is open */
-.menuOn nav.takeover .svg-menu-container {
-	transform: translateX(0);
-	pointer-events: all; /* Enable interaction when visible */
+/* Slide SVG menu in when menu is open - Desktop */
+@media (min-width: 768px) {
+	.menuOn nav.takeover .svg-menu-container {
+		display: flex;
+		animation: slideInDesktop 1.0s ease-in-out forwards;
+		pointer-events: all;
+	}
+}
+
+/* Slide SVG menu in when menu is open - Mobile */
+@media (max-width: 767px) {
+	.menuOn nav.takeover .svg-menu-container {
+		display: flex;
+		animation: slideInMobile 1.0s ease-in-out forwards;
+		pointer-events: all;
+	}
 }
 
 nav.takeover .dvd-stack {
@@ -620,20 +673,20 @@ nav.takeover svg {
 					// Force the slide-off animation
 					const menuContainer = document.querySelector('.svg-menu-container');
 					if (menuContainer) {
-						menuContainer.style.transition = 'transform 0.5s ease-in-out';
+						menuContainer.style.transition = 'transform 1.0s ease-in-out';
 						requestAnimationFrame(() => {
 							menuContainer.style.transform = 'translateX(100%)';
 							console.log('Slide-off animation triggered');
 						});
 					}
 
-					// Wait for slide-off animation to complete (500ms) before removing menuOn and navigating
+					// Wait for slide-off animation to complete (1000ms) before removing menuOn and navigating
 					setTimeout(() => {
 						// Close the menu after animation completes
 						document.body.classList.remove('menuOn');
 						console.log('Navigating after animation');
 						window.location.href = items[clickedItemIndex].url;
-					}, 500);
+					}, 1000);
 					return;
 				}
 
@@ -654,7 +707,7 @@ nav.takeover svg {
 					// Trigger the slide-off animation
 					const menuContainer = document.querySelector('.svg-menu-container');
 					if (menuContainer) {
-						menuContainer.style.transition = 'transform 0.5s ease-in-out';
+						menuContainer.style.transition = 'transform 1.0s ease-in-out';
 						requestAnimationFrame(() => {
 							menuContainer.style.transform = 'translateX(100%)';
 						});
@@ -665,7 +718,7 @@ nav.takeover svg {
 						document.body.classList.remove('menuOn');
 						console.log('Navigating after slide-off');
 						window.location.href = targetUrl;
-					}, 500);
+					}, 1000);
 				});
 				return;
 			}
@@ -758,7 +811,7 @@ nav.takeover svg {
 				hasAutoOpened = true;
 				openMenu();
 			}
-		}, 15000); // 15 seconds
+		}, 7000); // 7 seconds
 	}
 
 	// Homepage scroll gesture detection (wheel or touch swipe)
