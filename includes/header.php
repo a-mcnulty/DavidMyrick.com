@@ -192,6 +192,11 @@ body.homepage.menuOn nav.takeover {
 	transition: background-color 1.0s;
 }
 
+/* Remove white overlay from background cell pseudo-elements */
+nav.takeover .background .cell:after {
+	background-color: transparent !important;
+}
+
 /* SVG Menu Container - hidden by default, starts off-screen */
 nav.takeover .svg-menu-container {
 	display: flex;
