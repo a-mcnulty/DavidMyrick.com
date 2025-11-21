@@ -963,32 +963,33 @@ nav.takeover svg {
 		// Show active menu item's background when menu opens via menuBtn
 		const menuBtn = document.querySelector('.menuBtn');
 		if (menuBtn) {
-			menuBtn.addEventListener('click', () => {
-				// Check if menu is closing
-				if (document.body.classList.contains('menuOn')) {
-					// Menu is open, will close - stop rotation
-					stopAutoRotation();
-				} else {
-					// Menu is closed, will open - handle as normal
-					handleMenuOpen();
-				}
-			});
+			menuBtn.addEventListener('click', handleMenuOpen);
 		}
 
 		// Show active menu item's background when menu opens via logo
 		const pageTitle = document.querySelector('.pageTitle');
 		if (pageTitle) {
-			pageTitle.addEventListener('click', () => {
-				// Check if menu is closing
-				if (document.body.classList.contains('menuOn')) {
-					// Menu is open, will close - stop rotation
-					stopAutoRotation();
-				} else {
-					// Menu is closed, will open - handle as normal
-					handleMenuOpen();
+			pageTitle.addEventListener('click', handleMenuOpen);
+		}
+
+		// Watch for menu closing to stop auto-rotation
+		const menuObserver = new MutationObserver((mutations) => {
+			mutations.forEach((mutation) => {
+				if (mutation.attributeName === 'class') {
+					const hasMenuOn = document.body.classList.contains('menuOn');
+					if (!hasMenuOn) {
+						// Menu closed - stop rotation
+						stopAutoRotation();
+					}
 				}
 			});
-		}
+		});
+
+		// Start observing body class changes
+		menuObserver.observe(document.body, {
+			attributes: true,
+			attributeFilter: ['class']
+		});
 
 		// Homepage auto-open: stop timer when menu opens and start timer
 		const originalMenuBtn = document.querySelector('.menuBtn');
