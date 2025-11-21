@@ -197,6 +197,13 @@ nav.takeover .background .cell:after {
 	background-color: transparent !important;
 }
 
+/* Thicker white lines for menu button when menu is open */
+.menuOn .menuBtn .line:nth-child(1),
+.menuOn .menuBtn .line:nth-child(3) {
+	background-color: white !important;
+	height: 3px !important;
+}
+
 /* SVG Menu Container - hidden by default, starts off-screen */
 nav.takeover .svg-menu-container {
 	display: flex;
