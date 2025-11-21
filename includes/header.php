@@ -192,61 +192,26 @@ body.homepage.menuOn nav.takeover {
 	transition: background-color 1.0s;
 }
 
-/* Keyframes for slide-in/out animations - Desktop */
-@keyframes slideInDesktop {
-	from {
-		transform: translateX(100%);
-	}
-	to {
-		transform: translateX(46%);
-	}
-}
-
-@keyframes slideOutDesktop {
-	from {
-		transform: translateX(46%);
-	}
-	to {
-		transform: translateX(100%);
-	}
-}
-
-/* Keyframes for slide-in/out animations - Mobile */
-@keyframes slideInMobile {
-	from {
-		transform: translateX(100%);
-	}
-	to {
-		transform: translateX(0);
-	}
-}
-
-@keyframes slideOutMobile {
-	from {
-		transform: translateX(0);
-	}
-	to {
-		transform: translateX(100%);
-	}
-}
-
-/* SVG Menu Container - hidden by default */
+/* SVG Menu Container - hidden by default, starts off-screen */
 nav.takeover .svg-menu-container {
-	display: none;
+	display: flex;
 	justify-content: center;
 	align-items: center;
 	width: 100%;
 	height: 100%;
 	position: relative;
 	z-index: 2;
+	visibility: hidden;
 	pointer-events: none;
+	transition: transform 1.0s ease-in-out;
+	transform: translateX(100%);
 }
 
 /* Slide SVG menu in when menu is open - Desktop */
 @media (min-width: 768px) {
 	.menuOn nav.takeover .svg-menu-container {
-		display: flex;
-		animation: slideInDesktop 1.0s ease-in-out forwards;
+		visibility: visible;
+		transform: translateX(46%);
 		pointer-events: all;
 	}
 }
@@ -254,8 +219,8 @@ nav.takeover .svg-menu-container {
 /* Slide SVG menu in when menu is open - Mobile */
 @media (max-width: 767px) {
 	.menuOn nav.takeover .svg-menu-container {
-		display: flex;
-		animation: slideInMobile 1.0s ease-in-out forwards;
+		visibility: visible;
+		transform: translateX(0);
 		pointer-events: all;
 	}
 }
@@ -646,7 +611,13 @@ nav.takeover svg {
 				}
 			}
 
-			if (clickedItemId !== null) {
+			// Check if click is on actual SVG shape, not empty space
+			const targetElement = e.target;
+			const isClickOnShape = targetElement.classList.contains('front-rect') ||
+			                       targetElement.classList.contains('trapezoid') ||
+			                       targetElement.classList.contains('box-text');
+
+			if (clickedItemId !== null && isClickOnShape) {
 				e.preventDefault(); // Prevent any default navigation
 				e.stopPropagation(); // Stop event bubbling
 
@@ -901,50 +872,59 @@ nav.takeover svg {
 		// Don't call updateBackgroundImage() on page load - only when menu is actually used
 		// updateBackgroundImage();
 
-		// Show active menu item's background when menu opens
-		const menuBtn = document.querySelector('.menuBtn');
-		if (menuBtn) {
-			menuBtn.addEventListener('click', () => {
-				// Wait for menuOn class to be added
-				setTimeout(() => {
-					if (document.body.classList.contains('menuOn')) {
-						// Find menu item matching current URL and center it
-						const currentPath = window.location.pathname;
-						const matchingItemIndex = items.findIndex(item => item.url === currentPath);
+		// Function to handle menu opening - centers current page item
+		function handleMenuOpen() {
+			// Wait for menuOn class to be added
+			setTimeout(() => {
+				if (document.body.classList.contains('menuOn')) {
+					// Find menu item matching current URL and center it
+					const currentPath = window.location.pathname;
+					const matchingItemIndex = items.findIndex(item => item.url === currentPath);
 
-						if (matchingItemIndex !== -1) {
-							const totalItems = items.length;
-							const centerPosition = Math.floor(totalItems / 2);
+					if (matchingItemIndex !== -1) {
+						const totalItems = items.length;
+						const centerPosition = Math.floor(totalItems / 2);
 
-							// Find current position of the matching item
-							const currentPosition = currentState.indexOf(matchingItemIndex);
+						// Find current position of the matching item
+						const currentPosition = currentState.indexOf(matchingItemIndex);
 
-							// Calculate rotation needed to center it
-							let rotationNeeded = centerPosition - currentPosition;
+						// Calculate rotation needed to center it
+						let rotationNeeded = centerPosition - currentPosition;
 
-							// Normalize rotation to shortest path
-							const halfItems = Math.floor(totalItems / 2);
-							if (rotationNeeded > halfItems) {
-								rotationNeeded -= totalItems;
-							} else if (rotationNeeded < -halfItems) {
-								rotationNeeded += totalItems;
-							}
-
-							// Rotate the state array
-							const normalizedRotation = ((rotationNeeded % totalItems) + totalItems) % totalItems;
-							for (let i = 0; i < normalizedRotation; i++) {
-								const last = currentState.pop();
-								currentState.unshift(last);
-							}
-
-							// Update positions to show centered item
-							updateContinuousPositions();
+						// Normalize rotation to shortest path
+						const halfItems = Math.floor(totalItems / 2);
+						if (rotationNeeded > halfItems) {
+							rotationNeeded -= totalItems;
+						} else if (rotationNeeded < -halfItems) {
+							rotationNeeded += totalItems;
 						}
 
-						updateBackgroundImage();
+						// Rotate the state array
+						const normalizedRotation = ((rotationNeeded % totalItems) + totalItems) % totalItems;
+						for (let i = 0; i < normalizedRotation; i++) {
+							const last = currentState.pop();
+							currentState.unshift(last);
+						}
+
+						// Update positions to show centered item
+						updateContinuousPositions();
 					}
-				}, 50);
-			});
+
+					updateBackgroundImage();
+				}
+			}, 50);
+		}
+
+		// Show active menu item's background when menu opens via menuBtn
+		const menuBtn = document.querySelector('.menuBtn');
+		if (menuBtn) {
+			menuBtn.addEventListener('click', handleMenuOpen);
+		}
+
+		// Show active menu item's background when menu opens via logo
+		const pageTitle = document.querySelector('.pageTitle');
+		if (pageTitle) {
+			pageTitle.addEventListener('click', handleMenuOpen);
 		}
 
 		// Homepage auto-open: stop timer when menu opens and start timer
