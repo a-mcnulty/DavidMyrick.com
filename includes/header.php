@@ -802,12 +802,15 @@ nav.takeover svg {
 	function startAutoOpenTimer() {
 		if (!isHomepage || hasAutoOpened) return;
 
+		// Use 25 seconds on mobile, 7 seconds on desktop
+		const autoOpenDelay = isMobile ? 25000 : 7000;
+
 		autoOpenTimer = setTimeout(() => {
 			if (!document.body.classList.contains('menuOn')) {
 				hasAutoOpened = true;
 				openMenu();
 			}
-		}, 7000); // 7 seconds
+		}, autoOpenDelay);
 	}
 
 	// Homepage scroll gesture detection (wheel or touch swipe)
