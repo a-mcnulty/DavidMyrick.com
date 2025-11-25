@@ -1,0 +1,18 @@
+/* Custom pageOn styles - override dist/styles.css */
+
+/* Remove underline effect */
+.pageNav ul li a.pageOn:before {
+    width: 0 !important;
+}
+
+/* Add border around pageOn links */
+.pageNav ul li a.pageOn {
+    border: 1px solid currentColor;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+/* Optional: Add padding to hover state as well for consistency */
+.pageNav ul li a:hover {
+    padding: 5px 10px;
+}

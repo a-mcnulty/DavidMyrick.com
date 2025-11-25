@@ -20,6 +20,7 @@
 
 <link rel="stylesheet" href="https://use.typekit.net/gip7dwn.css">
 <link rel="stylesheet" type="text/css" href="/dist/styles.css?v=061722" />
+<link rel="stylesheet" type="text/css" href="/css/custom.css" />
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-105298043-1"></script>
