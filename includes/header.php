@@ -101,26 +101,21 @@ $logoMark = getFirstImage(719);
 
 				$firstItem = getFirstImage($theCatId, $theSorter);
 				$hasVideo = false;
-				$videoStr = '';
-
-				// Only proceed if we have a valid image
-				if ($firstItem && isset($firstItem['id'])) {
-					$firstItemVideo = getImageVideo($firstItem['id']);
-					if ($firstItemVideo && isset($firstItemVideo['hoverFile']) && $firstItemVideo['hoverFile'] != "") {
-						$hasVideo = true;
-						$videoStr = '<video muted playsinline loop><source src="/videos/' . $firstItemVideo['hoverFile'] . '" /></video>';
-					}
-					if ($firstItemVideo && isset($firstItemVideo['url_loop_desktop']) && $firstItemVideo['url_loop_desktop'] != "") {
-						$hasVideo = true;
-						$videoStr = '<video muted playsinline loop class="sizeload" data-hd="' . $firstItemVideo['url_loop_desktop'] . '" data-sd="' . $firstItemVideo['url_loop_mobile'] . '"><source src="" /></video>';
-					}
+				$firstItemVideo = getImageVideo($firstItem['id']);
+				if ($firstItemVideo['hoverFile'] != "") {
+					$hasVideo = true;
+					$videoStr = '<video muted playsinline loop onended="this.play()"><source src="/videos/' . $firstItemVideo['hoverFile'] . '" /></video>';
+				}
+				if ($firstItemVideo['url_loop_desktop'] != "") {
+					$hasVideo = true;
+					$videoStr = '<video muted playsinline loop onended="this.play()" class="sizeload" data-hd="' . $firstItemVideo['url_loop_desktop'] . '" data-sd="' . $firstItemVideo['url_loop_mobile'] . '"><source src="" /></video>';
 				}
 
 				?>
 				<div class="cell" data-id="<?= $cat['id'] ?>">
 					<?php if ($hasVideo) { ?>
 						<?= $videoStr ?>
-					<?php } elseif ($firstItem && isset($firstItem['img'])) { ?>
+					<?php } else { ?>
 						<img src="<?= $loaderImg ?>" data-img="<?= $firstItem['img'] ?>" class="photo loadmeview" alt="<?= $cat['name'] ?>" />
 					<?php } ?>
 				</div>
@@ -393,7 +388,7 @@ nav.takeover svg {
 
 	// Auto-rotation variables
 	let autoRotateInterval = null;
-	const autoRotateDelay = 7000; // 7 seconds
+	const autoRotateDelay = 12000; // 12 seconds
 
 	function initRender() {
 		const svg = document.querySelector('.dvd-stack');
@@ -536,9 +531,17 @@ nav.takeover svg {
 			if (!group) return;
 
 			const totalPositions = positionConfigs.length;
-			const isWrapping = targetPos > (totalPositions - 0.7);
-			group.style.opacity = isWrapping ? '0' : '1';
-			group.style.zIndex = isWrapping ? '-1' : '0';
+			const fadeStart = totalPositions - 1;
+			const fadeRange = 1;
+
+			// Gradual fade instead of binary snap
+			let opacity = 1;
+			if (targetPos > fadeStart) {
+				opacity = Math.max(0, 1 - ((targetPos - fadeStart) / fadeRange));
+			}
+
+			group.style.opacity = opacity;
+			group.style.zIndex = opacity < 0.1 ? '-1' : '0';
 
 			const rect = group.querySelector('.front-rect');
 			const trapezoid = group.querySelector('.trapezoid');
@@ -746,7 +749,7 @@ nav.takeover svg {
 	function animateToOffset(targetOffset, callback) {
 		const startOffset = scrollOffset;
 		const distance = targetOffset - startOffset;
-		const duration = Math.min(500, Math.abs(distance) * 200);
+		const duration = Math.min(2000, Math.abs(distance) * 1000);
 		const startTime = performance.now();
 
 		function animate(currentTime) {
