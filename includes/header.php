@@ -104,11 +104,11 @@ $logoMark = getFirstImage(719);
 				$firstItemVideo = getImageVideo($firstItem['id']);
 				if ($firstItemVideo['hoverFile'] != "") {
 					$hasVideo = true;
-					$videoStr = '<video muted playsinline loop onended="this.play()"><source src="/videos/' . $firstItemVideo['hoverFile'] . '" /></video>';
+					$videoStr = '<video muted playsinline loop preload="none" onended="this.play()"><source src="/videos/' . $firstItemVideo['hoverFile'] . '" /></video>';
 				}
 				if ($firstItemVideo['url_loop_desktop'] != "") {
 					$hasVideo = true;
-					$videoStr = '<video muted playsinline loop onended="this.play()" class="sizeload" data-hd="' . $firstItemVideo['url_loop_desktop'] . '" data-sd="' . $firstItemVideo['url_loop_mobile'] . '"><source src="" /></video>';
+					$videoStr = '<video muted playsinline loop preload="none" onended="this.play()" class="sizeload" data-hd="' . $firstItemVideo['url_loop_desktop'] . '" data-sd="' . $firstItemVideo['url_loop_mobile'] . '"><source src="" /></video>';
 				}
 
 				?>
