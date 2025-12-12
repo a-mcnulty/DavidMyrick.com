@@ -802,8 +802,8 @@ nav.takeover svg {
 	function startAutoOpenTimer() {
 		if (!isHomepage || hasAutoOpened) return;
 
-		// Use 25 seconds on mobile, 7 seconds on desktop
-		const autoOpenDelay = isMobile ? 25000 : 7000;
+		// Use 25 seconds on mobile, 25 seconds on desktop
+		const autoOpenDelay = isMobile ? 25000 : 25000;
 
 		autoOpenTimer = setTimeout(() => {
 			if (!document.body.classList.contains('menuOn')) {
